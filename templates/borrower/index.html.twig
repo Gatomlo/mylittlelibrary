@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Borrower index{% endblock %}
+
+{% block body %}
+    <h1>Borrower index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Firstname</th>
+                <th>Lastname</th>
+                <th>Mail</th>
+                <th>Phone</th>
+                <th>Implantation</th>
+                <th>Department</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for borrower in borrowers %}
+            <tr>
+                <td>{{ borrower.id }}</td>
+                <td>{{ borrower.firstname }}</td>
+                <td>{{ borrower.lastname }}</td>
+                <td>{{ borrower.mail }}</td>
+                <td>{{ borrower.phone }}</td>
+                <td>{{ borrower.implantation }}</td>
+                <td>{{ borrower.department }}</td>
+                <td>
+                    <a href="{{ path('borrower_show', {'id': borrower.id}) }}">show</a>
+                    <a href="{{ path('borrower_edit', {'id': borrower.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('borrower_new') }}">Create new</a>
+{% endblock %}

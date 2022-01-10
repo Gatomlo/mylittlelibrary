@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Borrower{% endblock %}
+
+{% block body %}
+    <h1>Borrower</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ borrower.id }}</td>
+            </tr>
+            <tr>
+                <th>Firstname</th>
+                <td>{{ borrower.firstname }}</td>
+            </tr>
+            <tr>
+                <th>Lastname</th>
+                <td>{{ borrower.lastname }}</td>
+            </tr>
+            <tr>
+                <th>Mail</th>
+                <td>{{ borrower.mail }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ borrower.phone }}</td>
+            </tr>
+            <tr>
+                <th>Implantation</th>
+                <td>{{ borrower.implantation }}</td>
+            </tr>
+            <tr>
+                <th>Department</th>
+                <td>{{ borrower.department }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('borrower_index') }}">back to list</a>
+
+    <a href="{{ path('borrower_edit', {'id': borrower.id}) }}">edit</a>
+
+    {{ include('borrower/_delete_form.html.twig') }}
+{% endblock %}
