@@ -84,6 +84,11 @@ class Book
      */
     private $rentals;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $year;
+
     public function __construct()
     {
         $this->rentals = new ArrayCollection();
@@ -261,6 +266,18 @@ class Book
         if ($this->rentals->removeElement($rental)) {
             $rental->removeBook($this);
         }
+
+        return $this;
+    }
+
+    public function getYear(): ?string
+    {
+        return $this->year;
+    }
+
+    public function setYear(?string $year): self
+    {
+        $this->year = $year;
 
         return $this;
     }

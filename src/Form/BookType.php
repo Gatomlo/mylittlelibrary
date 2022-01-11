@@ -23,6 +23,7 @@ class BookType extends AbstractType
             ->add('paging')
             ->add('editor')
             ->add('price')
+            ->add('year')
             ->add('language')
         ;
     }

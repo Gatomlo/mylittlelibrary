@@ -6,7 +6,7 @@
     <h1>Create new Book</h1>
 
     {{ include('book/_form.html.twig') }}
-    <button id="submit">rechercher</button>
+
 
     <a href="{{ path('book_index') }}">back to list</a>
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -15,77 +15,60 @@
      <script>
      //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
       $.ajaxSetup({ cache: false });
-
       $("#submit").click(function(evt) {
         evt.preventDefault();
         // $("#book").html("");
         var tags = $("#book_ISBN").val();
-        var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
-        var url = 'https://www.googleapis.com/books/v1/volumes?q='+tags+'&key='+key;
+        var url = 'https://openlibrary.org/isbn/'+tags+'.json';
         $.getJSON( url, function( json ) {})
           .done(function(data) {
-            books=data['items'];
-          console.log(books);
+            console.log(data)
+          //   book=data['items'][0];
+          //   console.log(book)
+          // $("#book_title").val(book["volumeInfo"]["title"] || "Unknow")
+          // var authors = book["volumeInfo"]["authors"];
+          // authors.toString();
+          // $("#book_author").val(authors)
+          // $("#book_language").val(book["volumeInfo"]["language"] || "Unknow")
+          // $("#book_year").val(book["volumeInfo"]["publishedDate"] || "Unknow")
+          // $("#book_editor").val(book["volumeInfo"]["publisher"] || "Unknow")
+          // $("#book_paging").val(book["volumeInfo"]["pageCount"] || "Unknow")
+          // $("#book_abstract").val(book["volumeInfo"]["description"] || "Unknow")
+          // $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "Unknow")
           })
       });
 
-function displayInfos(books){
-var title;
-var authors;
-var description;
-var publisher;
-var publishYear;
-var pages;
-var imgSrc =  "picture.png";
-var target;
-var content;
-
-//si il n'y a qu'un seul livre, on l'insère dans la page
-if (books.length == 1){
-  target =$("#books");
-}
-// si il y a plusieurs livres ont les propose dans une modal en vue de choisir le bon
-else{
-  $('#selectBook').modal("show");
-  target =$("#choiceOfBook");
-}
-
-$(books).each(function(index){
-      title = books[index]["volumeInfo"]["title"] || "Unknow";
-      authors = books[index]["volumeInfo"]["authors"] || "Unknow";
-      authors.toString();
-      description = books[index]["volumeInfo"]["description"] || "Unknow";
-      publisher = books[index]["volumeInfo"]["publisher"] || "Unknow";
-      publishYear = books[index]["volumeInfo"]["publishedDate"] || "Unknow";
-      pages= books[index]["volumeInfo"]["pageCount"] || "Unknow";
-      if( books[index]["volumeInfo"]["imageLinks"] !== undefined){
-        imgSrc =  books[index]["volumeInfo"]["imageLinks"]["smallThumbnail"];
-      }
-
-      content="<div class='oneBook'>"+
-      "<img class='cover' src='"+ imgSrc +"' alt='no picture'>"+
-      "<h1>"+ title +"</h1>"+
-      "<h3>"+ authors +"</h3>"+
-      "<p>"+ description +"</p>"+
-      "<h5>"+ publisher +" , "+publishYear+"</h5>"+
-      "</div>"
-      // Si il y a plusieurs livres, on ajoute un bouton radio en vue de la selection
-      if (books.length != 1){
-        content +='<label class="btn btn-secondary active">'+
-          '<input type="radio" class="selectedBook" name="options" id="option'+index+'" data-index="'+index+'" autocomplete="off"> Selectionner'+
-        '</label>'
-      }
-        target.append(
-          content
-      );
-})
-}
-
-
-//A la fermeture, on vide la modal
-$(".modal").on("hidden.bs.modal", function(){
-  $(".modal-body").html("");
-});
+    </script>
+    <script>
+    //  <script>
+    //  //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
+    //   $.ajaxSetup({ cache: false });
+    //
+    //   $("#submit").click(function(evt) {
+    //     evt.preventDefault();
+    //     // $("#book").html("");
+    //     var tags = $("#book_ISBN").val();
+    //     var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
+    //     var url = 'https://www.googleapis.com/books/v1/volumes?q='+tags+'&key='+key;
+    //     $.getJSON( url, function( json ) {})
+    //       .done(function(data) {
+    //         console.log(data)
+    //         book=data['items'][0];
+    //         console.log(book)
+    //       $("#book_title").val(book["volumeInfo"]["title"] || "Unknow")
+    //       var authors = book["volumeInfo"]["authors"];
+    //       authors.toString();
+    //       $("#book_author").val(authors)
+    //       $("#book_language").val(book["volumeInfo"]["language"] || "Unknow")
+    //       $("#book_year").val(book["volumeInfo"]["publishedDate"] || "Unknow")
+    //       $("#book_editor").val(book["volumeInfo"]["publisher"] || "Unknow")
+    //       $("#book_paging").val(book["volumeInfo"]["pageCount"] || "Unknow")
+    //       $("#book_abstract").val(book["volumeInfo"]["description"] || "Unknow")
+    //       $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "Unknow")
+    //       })
+    //   });
+    //
+    // </script>
 
     </script>
 
