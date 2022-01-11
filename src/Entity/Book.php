@@ -30,7 +30,7 @@ class Book
     private $author;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="string", nullable=true)
      */
     private $ISBN;
 
@@ -118,12 +118,12 @@ class Book
         return $this;
     }
 
-    public function getISBN(): ?int
+    public function getISBN(): ?string
     {
         return $this->ISBN;
     }
 
-    public function setISBN(?int $ISBN): self
+    public function setISBN(string $ISBN): self
     {
         $this->ISBN = $ISBN;
 
