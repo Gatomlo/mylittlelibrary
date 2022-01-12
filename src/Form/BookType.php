@@ -6,25 +6,39 @@ use App\Entity\Book;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class BookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title')
-            ->add('author')
-            ->add('ISBN')
-            ->add('image')
-            ->add('code')
-            ->add('owner')
-            ->add('shelf')
-            ->add('abstract')
-            ->add('paging')
-            ->add('editor')
-            ->add('price')
-            ->add('year')
-            ->add('language')
+        ->add('title', TextType::class, array(
+          'attr' => array('class' => 'form-control')))
+            ->add('author', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('ISBN', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('image', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('code', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('owner', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('shelf', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('abstract', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('paging', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('editor', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('price', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('year', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
+            ->add('language', TextType::class, array(
+              'attr' => array('class' => 'form-control')))
         ;
     }
 

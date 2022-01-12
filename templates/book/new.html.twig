@@ -7,69 +7,39 @@
 
     {{ include('book/_form.html.twig') }}
 
+    
 
     <a href="{{ path('book_index') }}">back to list</a>
-     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
      <script>
      //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
       $.ajaxSetup({ cache: false });
+
       $("#submit").click(function(evt) {
         evt.preventDefault();
         // $("#book").html("");
         var tags = $("#book_ISBN").val();
-        var url = 'https://openlibrary.org/isbn/'+tags+'.json';
+        var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
+        var url = 'https://www.googleapis.com/books/v1/volumes?q='+tags+'&key='+key;
         $.getJSON( url, function( json ) {})
           .done(function(data) {
             console.log(data)
-          //   book=data['items'][0];
-          //   console.log(book)
-          // $("#book_title").val(book["volumeInfo"]["title"] || "Unknow")
-          // var authors = book["volumeInfo"]["authors"];
-          // authors.toString();
-          // $("#book_author").val(authors)
-          // $("#book_language").val(book["volumeInfo"]["language"] || "Unknow")
-          // $("#book_year").val(book["volumeInfo"]["publishedDate"] || "Unknow")
-          // $("#book_editor").val(book["volumeInfo"]["publisher"] || "Unknow")
-          // $("#book_paging").val(book["volumeInfo"]["pageCount"] || "Unknow")
-          // $("#book_abstract").val(book["volumeInfo"]["description"] || "Unknow")
-          // $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "Unknow")
+            book=data['items'][0];
+            console.log(book)
+          $("#book_title").val(book["volumeInfo"]["title"] || "")
+          var authors = book["volumeInfo"]["authors"];
+          authors.toString();
+          $("#book_author").val(authors)
+          $("#book_language").val(book["volumeInfo"]["language"] || "")
+          $("#book_year").val(book["volumeInfo"]["publishedDate"] || "")
+          $("#book_editor").val(book["volumeInfo"]["publisher"] || "")
+          $("#book_paging").val(book["volumeInfo"]["pageCount"] || "")
+          $("#book_abstract").val(book["volumeInfo"]["description"] || "")
+          $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "")
           })
       });
 
     </script>
-    <script>
-    //  <script>
-    //  //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
-    //   $.ajaxSetup({ cache: false });
-    //
-    //   $("#submit").click(function(evt) {
-    //     evt.preventDefault();
-    //     // $("#book").html("");
-    //     var tags = $("#book_ISBN").val();
-    //     var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
-    //     var url = 'https://www.googleapis.com/books/v1/volumes?q='+tags+'&key='+key;
-    //     $.getJSON( url, function( json ) {})
-    //       .done(function(data) {
-    //         console.log(data)
-    //         book=data['items'][0];
-    //         console.log(book)
-    //       $("#book_title").val(book["volumeInfo"]["title"] || "Unknow")
-    //       var authors = book["volumeInfo"]["authors"];
-    //       authors.toString();
-    //       $("#book_author").val(authors)
-    //       $("#book_language").val(book["volumeInfo"]["language"] || "Unknow")
-    //       $("#book_year").val(book["volumeInfo"]["publishedDate"] || "Unknow")
-    //       $("#book_editor").val(book["volumeInfo"]["publisher"] || "Unknow")
-    //       $("#book_paging").val(book["volumeInfo"]["pageCount"] || "Unknow")
-    //       $("#book_abstract").val(book["volumeInfo"]["description"] || "Unknow")
-    //       $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "Unknow")
-    //       })
-    //   });
-    //
-    // </script>
 
-    </script>
 
 {% endblock %}
