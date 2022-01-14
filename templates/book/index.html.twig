@@ -1,41 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Book index{% endblock %}
+{% block title %}Livres{% endblock %}
 
 {% block body %}
 
-    <h1>Book index</h1>
+    <h1>Liste des livres</h1>
 
     <table id="table_id" class="display" class="table">
         <thead>
             <tr>
+                <th>Couverture</th>
                 <th>Titre</th>
                 <th>Auteur(s)</th>
-                <th>ISBN</th>
-                <th>Couverture</th>
-                <th>Code</th>
-                <th>Localisation</th>
-                <th>Résumé</th>
                 <th>Editor</th>
-                <th>Language</th>
+                <th>Localisation</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for book in books %}
             <tr>
+                <td><img src="{{ book.image }}"></td>
                 <td>{{ book.title }}</td>
                 <td>{{ book.author }}</td>
-                <td>{{ book.ISBN }}</td>
-                <td><img src="{{ book.image }}"></td>
-                <td>{{ book.code }}</td>
-                <td>{{ book.shelf }}</td>
-                <td>{{ book.abstract }}</td>
                 <td>{{ book.editor }}</td>
-                <td>{{ book.language }}</td>
+                <td>{{ book.shelf }}</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('book_show', {'id': book.id}) }}">show</a>
-                    <a class="btn btn-primary" href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('book_show', {'id': book.id}) }}"><i class="fas fa-search"></i></a>
+                    <a class="btn btn-primary" href="{{ path('book_edit', {'id': book.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -48,10 +40,14 @@
 
     <a class="btn btn-primary" href="{{ path('book_new') }}">Nouveau livre</a>
 
-    <script>
-      $(document).ready( function () {
-        $('#table_id').DataTable();
-      } );
-    </script>
 
+
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).ready( function () {
+      $('#table_id').DataTable();
+    } );
+  </script>
 {% endblock %}

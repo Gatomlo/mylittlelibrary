@@ -15,35 +15,36 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+
 
 class RentalType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('locationDate', DateType::class ,array(
-            'label' => 'Date de l\'emprunt',
-            'attr' => array('class' => 'form-control')))
             ->add('returnStatus',ChoiceType::class,array(
-            'attr' => array('class' => 'form-control'),
-            'choices' => array(
-              'Non' => false,
-              'Oui' => true,
-              ),
-            ))
-            ->add('term',TextType::class ,array(
+              'label' => 'Rendu ?',
+              'attr' => array('class' => 'form-control'),
+              'choices' => array(
+                'Non' => false,
+                'Oui' => true,
+                ),
+              ))
+            ->add('term',IntegerType::class ,array(
               'label' => 'Durée du prêt',
-            'attr' => array('class' => 'form-control')))
+              'data' => 7,
+              'attr' => array('class' => 'form-control')))
             ->add('observation',TextareaType::class,array(
               'label' => 'Remarques',
-            'attr' => array('class' => 'form-control')))
+              'attr' => array('class' => 'form-control')))
             ->add('borrower',EntityType::class, array(
+              'placeholder' => 'Choisissez une personne',
               'label' => 'Emprunteur',
               'class' => Borrower::class,
               'attr' => array('class' => 'form-control'),
-              'choice_label' => "fullName"))
-            
-        ;
+              'choice_label' => "fullName"));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -1,27 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Borrower index{% endblock %}
+{% block title %}Emprunteurs{% endblock %}
 
 {% block body %}
-    <h1>Borrower index</h1>
+    <h1>Liste des emprunteurs</h1>
 
-    <table class="table">
+    <table id="table_id" class="table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Firstname</th>
-                <th>Lastname</th>
+                <th>Prénom</th>
+                <th>Nom</th>
                 <th>Mail</th>
-                <th>Phone</th>
+                <th>Téléphone</th>
                 <th>Implantation</th>
-                <th>Department</th>
-                <th>actions</th>
+                <th>Département</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for borrower in borrowers %}
             <tr>
-                <td>{{ borrower.id }}</td>
                 <td>{{ borrower.firstname }}</td>
                 <td>{{ borrower.lastname }}</td>
                 <td>{{ borrower.mail }}</td>
@@ -29,8 +27,8 @@
                 <td>{{ borrower.implantation }}</td>
                 <td>{{ borrower.department }}</td>
                 <td>
-                    <a href="{{ path('borrower_show', {'id': borrower.id}) }}">show</a>
-                    <a href="{{ path('borrower_edit', {'id': borrower.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('borrower_show', {'id': borrower.id}) }}"><i class="fas fa-search"></i></a>
+                    <a class="btn btn-primary" href="{{ path('borrower_edit', {'id': borrower.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -41,5 +39,13 @@
         </tbody>
     </table>
 
-    <a href="{{ path('borrower_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('borrower_new') }}">Nouvel emprunteur</a>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).ready( function () {
+      $('#table_id').DataTable();
+    } );
+  </script>
 {% endblock %}

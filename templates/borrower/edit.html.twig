@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Borrower{% endblock %}
+{% block title %}Modification emprunteur{% endblock %}
 
 {% block body %}
-    <h1>Edit Borrower</h1>
+    <h1>Modification emprunteur</h1>
 
-    {{ include('borrower/_form.html.twig', {'button_label': 'Update'}) }}
+    {{ include('borrower/_form.html.twig', {'button_label': 'Sauver'}) }}
 
-    <a href="{{ path('borrower_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('borrower_index') }}">Retour</a>
 
     {{ include('borrower/_delete_form.html.twig') }}
 {% endblock %}

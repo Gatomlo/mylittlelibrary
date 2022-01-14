@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Rental index{% endblock %}
+{% block title %}Emprunts{% endblock %}
 
 {% block body %}
-    <h1>Rental index</h1>
+    <h1>Liste des emprunts</h1>
 
-    <table class="table">
+    <table id="table_id" class="table">
         <thead>
             <tr>
-                <th>Id</th>
+
                 <th>LocationDate</th>
                 <th>ReturnStatus</th>
                 <th>Term</th>
@@ -19,14 +19,14 @@
         <tbody>
         {% for rental in rentals %}
             <tr>
-                <td>{{ rental.id }}</td>
+
                 <td>{{ rental.locationDate ? rental.locationDate|date('Y-m-d') : '' }}</td>
                 <td>{{ rental.returnStatus ? 'Yes' : 'No' }}</td>
                 <td>{{ rental.term }}</td>
                 <td>{{ rental.observation }}</td>
                 <td>
-                    <a href="{{ path('rental_show', {'id': rental.id}) }}">show</a>
-                    <a href="{{ path('rental_edit', {'id': rental.id}) }}">edit</a>
+                    <a class="btn btn-primary" href="{{ path('rental_show', {'id': rental.id}) }}"><i class="fas fa-search"></i></a>
+                    <a class="btn btn-primary" href="{{ path('rental_edit', {'id': rental.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -37,5 +37,13 @@
         </tbody>
     </table>
 
-    <a href="{{ path('rental_new') }}">Create new</a>
+    <a class="btn btn-primary" href="{{ path('rental_new') }}">Nouvel emprunt</a>
+{% endblock %}
+
+{% block javascript %}
+  <script>
+    $(document).ready( function () {
+      $('#table_id').DataTable();
+    } );
+  </script>
 {% endblock %}

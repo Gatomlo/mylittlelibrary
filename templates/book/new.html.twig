@@ -1,45 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Book{% endblock %}
+{% block title %}Nouveau livre{% endblock %}
 
 {% block body %}
-    <h1>Create new Book</h1>
-
+    <h1>Créer un nouveau livre</h1>
     {{ include('book/_form.html.twig') }}
-
-    
-
     <a href="{{ path('book_index') }}">back to list</a>
-
-     <script>
-     //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
-      $.ajaxSetup({ cache: false });
-
-      $("#submit").click(function(evt) {
-        evt.preventDefault();
-        // $("#book").html("");
-        var tags = $("#book_ISBN").val();
-        var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
-        var url = 'https://www.googleapis.com/books/v1/volumes?q='+tags+'&key='+key;
-        $.getJSON( url, function( json ) {})
-          .done(function(data) {
-            console.log(data)
-            book=data['items'][0];
-            console.log(book)
-          $("#book_title").val(book["volumeInfo"]["title"] || "")
-          var authors = book["volumeInfo"]["authors"];
-          authors.toString();
-          $("#book_author").val(authors)
-          $("#book_language").val(book["volumeInfo"]["language"] || "")
-          $("#book_year").val(book["volumeInfo"]["publishedDate"] || "")
-          $("#book_editor").val(book["volumeInfo"]["publisher"] || "")
-          $("#book_paging").val(book["volumeInfo"]["pageCount"] || "")
-          $("#book_abstract").val(book["volumeInfo"]["description"] || "")
-          $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "")
-          })
-      });
-
-    </script>
-
-
+{% endblock %}
+{% block javascript %}
+  <script>
+    //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
+     $.ajaxSetup({ cache: false });
+     $("#submit").click(function(evt) {
+       evt.preventDefault();
+       // $("#book").html("");
+       var tags = $("#book_ISBN").val();
+       var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
+       var url = 'https://www.googleapis.com/books/v1/volumes?q='+tags+'&key='+key;
+       $.getJSON( url, function( json ) {})
+         .done(function(data) {
+           console.log(data)
+           book=data['items'][0];
+           console.log(book)
+         $("#book_title").val(book["volumeInfo"]["title"] || "")
+         var authors = book["volumeInfo"]["authors"];
+         authors.toString();
+         $("#book_author").val(authors)
+         $("#book_language").val(book["volumeInfo"]["language"] || "")
+         $("#book_year").val(book["volumeInfo"]["publishedDate"] || "")
+         $("#book_editor").val(book["volumeInfo"]["publisher"] || "")
+         $("#book_paging").val(book["volumeInfo"]["pageCount"] || "")
+         $("#book_abstract").val(book["volumeInfo"]["description"] || "")
+         $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "")
+         })
+     });
+  </script>
 {% endblock %}

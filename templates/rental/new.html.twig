@@ -1,11 +1,49 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Rental{% endblock %}
+{% block title %}Nouveau prêt{% endblock %}
 
 {% block body %}
-    <h1>Create new Rental</h1>
-
+    <h1>Créer un emprunt</h1>
     {{ include('rental/_form.html.twig') }}
-
+    <div class="input-group mb-3">
+    <input type="text" class="form-control" id="book_CODE" placeholder="Insérer un code de livre" aria-label="Code de livre" aria-describedby="button-addon2">
+      <button class="btn btn-outline-secondary" type="button" id="findBook"><i class="fas fa-plus"></i></button>
+    </div>
+    <div>
+    <table  class="display table" class="table">
+        <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Retour prévu</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="booksList">
+        </tbody>
+    </table>
+    </div>
     <a href="{{ path('rental_index') }}">back to list</a>
+{% endblock %}
+{% block javascript %}
+  <script>
+    $.ajaxSetup({ cache: false });
+    var index = 0
+    $("#findBook").click(function(evt) {
+      var booksListToCreate =[]
+      var locationDate = $("#rental_locationDate").val()
+      evt.preventDefault();
+      var url = "{{ path('find_book',{'code':'codeBook'})}}";
+      url = url.replace('codeBook', $("#book_CODE").val());
+      $.getJSON( url, function( json ) {})
+        .done(function(data) {
+          moment.locale('fr');
+          date = moment().add(7, 'days');
+          var newItem = "<<tr><td>"+data['title']+"</td><td>"+date.format('ll')+"</td><td>"+index+"</td></tr>"
+          var newItemToCreate = [data['id'],date]
+          $('#booksList').append(newItem);
+          booksListToCreate.push(newItemToCreate)
+          index = index + 1
+          });
+    })
+  </script>
 {% endblock %}

@@ -3,20 +3,16 @@
 {% block title %}Book{% endblock %}
 
 {% block body %}
-    <h1>Book</h1>
+    <h1>{{ book.title }}</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ book.id }}</td>
+                <th>Couverture</th>
+                <td><img src="{{ book.image }}"></td>
             </tr>
             <tr>
-                <th>Title</th>
-                <td>{{ book.title }}</td>
-            </tr>
-            <tr>
-                <th>Author</th>
+                <th>Auteur(s)</th>
                 <td>{{ book.author }}</td>
             </tr>
             <tr>
@@ -24,47 +20,43 @@
                 <td>{{ book.ISBN }}</td>
             </tr>
             <tr>
-                <th>Image</th>
-                <td>{{ book.image }}</td>
-            </tr>
-            <tr>
                 <th>Code</th>
                 <td>{{ book.code }}</td>
             </tr>
             <tr>
-                <th>Owner</th>
+                <th>Propriétaire</th>
                 <td>{{ book.owner }}</td>
             </tr>
             <tr>
-                <th>Shelf</th>
+                <th>Localisation</th>
                 <td>{{ book.shelf }}</td>
             </tr>
             <tr>
-                <th>Abstract</th>
+                <th>Résumé</th>
                 <td>{{ book.abstract }}</td>
             </tr>
             <tr>
-                <th>Paging</th>
-                <td>{{ book.paging }}</td>
+                <th>Nombre de pages</th>
+                <td>{{ book.paging }} pages</td>
             </tr>
             <tr>
-                <th>Editor</th>
+                <th>Editeur</th>
                 <td>{{ book.editor }}</td>
             </tr>
             <tr>
-                <th>Price</th>
-                <td>{{ book.price }}</td>
+                <th>Prix neuf</th>
+                <td>{{ book.price }} €</td>
             </tr>
             <tr>
-                <th>Language</th>
+                <th>Langue</th>
                 <td>{{ book.language }}</td>
             </tr>
         </tbody>
     </table>
 
-    <a href="{{ path('book_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('book_index') }}">Retour</a>
 
-    <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
+    <a class="btn btn-primary"href="{{ path('book_edit', {'id': book.id}) }}">Editer</a>
 
     {{ include('book/_delete_form.html.twig') }}
 {% endblock %}
