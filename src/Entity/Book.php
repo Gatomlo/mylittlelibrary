@@ -89,9 +89,15 @@ class Book
      */
     private $year;
 
+    /**
+     * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="book")
+     */
+    private $bookRentals;
+
     public function __construct()
     {
         $this->rentals = new ArrayCollection();
+        $this->bookRentals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -278,6 +284,36 @@ class Book
     public function setYear(?string $year): self
     {
         $this->year = $year;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BookRental[]
+     */
+    public function getBookRentals(): Collection
+    {
+        return $this->bookRentals;
+    }
+
+    public function addBookRental(BookRental $bookRental): self
+    {
+        if (!$this->bookRentals->contains($bookRental)) {
+            $this->bookRentals[] = $bookRental;
+            $bookRental->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookRental(BookRental $bookRental): self
+    {
+        if ($this->bookRentals->removeElement($bookRental)) {
+            // set the owning side to null (unless already changed)
+            if ($bookRental->getBook() === $this) {
+                $bookRental->setBook(null);
+            }
+        }
 
         return $this;
     }

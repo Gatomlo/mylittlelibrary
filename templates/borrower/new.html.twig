@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Borrower{% endblock %}
+{% block title %}Nouvel emprunter{% endblock %}
 
 {% block body %}
-    <h1>Create new Borrower</h1>
+    <h1>Créer un emprunteur</h1>
 
     {{ include('borrower/_form.html.twig') }}
 
-    <a href="{{ path('borrower_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('borrower_index') }}">Retour à la liste</a>
 {% endblock %}

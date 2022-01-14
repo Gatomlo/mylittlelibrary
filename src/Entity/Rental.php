@@ -50,9 +50,15 @@ class Rental
      */
     private $observation;
 
+    /**
+     * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="rental")
+     */
+    private $bookRentals;
+
     public function __construct()
     {
         $this->book = new ArrayCollection();
+        $this->bookRentals = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -140,6 +146,36 @@ class Rental
     public function setObservation(?string $observation): self
     {
         $this->observation = $observation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|BookRental[]
+     */
+    public function getBookRentals(): Collection
+    {
+        return $this->bookRentals;
+    }
+
+    public function addBookRental(BookRental $bookRental): self
+    {
+        if (!$this->bookRentals->contains($bookRental)) {
+            $this->bookRentals[] = $bookRental;
+            $bookRental->setRental($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBookRental(BookRental $bookRental): self
+    {
+        if ($this->bookRentals->removeElement($bookRental)) {
+            // set the owning side to null (unless already changed)
+            if ($bookRental->getRental() === $this) {
+                $bookRental->setRental(null);
+            }
+        }
 
         return $this;
     }

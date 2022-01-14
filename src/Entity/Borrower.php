@@ -81,6 +81,13 @@ class Borrower
         return $this->lastname;
     }
 
+    public function getFullName(): ?string
+    {
+      if ($this->firstname && $this->lastname) {
+      return $this->firstname . ' ' . $this->lastname;
+      }
+    }
+    
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
