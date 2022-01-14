@@ -1,38 +1,77 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Rental{% endblock %}
+{% block title %}Emprunt{% endblock %}
 
 {% block body %}
-    <h1>Rental</h1>
+    <h1>Emprunt</h1>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ rental.id }}</td>
+                <th>Emprunteur</th>
+                <td>{{ rental.borrower.fullName}}</td>
             </tr>
             <tr>
-                <th>LocationDate</th>
+                <th>Date d'emprunt</th>
                 <td>{{ rental.locationDate ? rental.locationDate|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>ReturnStatus</th>
-                <td>{{ rental.returnStatus ? 'Yes' : 'No' }}</td>
+                <th>Rendu</th>
+                <td>{{ rental.returnStatus ? 'Oui' : 'Non' }}</td>
             </tr>
             <tr>
-                <th>Term</th>
-                <td>{{ rental.term }}</td>
-            </tr>
-            <tr>
-                <th>Observation</th>
+                <th>Remarques</th>
                 <td>{{ rental.observation }}</td>
             </tr>
         </tbody>
     </table>
+    <h2>Livres empruntés</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Titre</th>
+          <th>Date prévue</th>
+          <th>Rendu le</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for rental in rental.bookRentals %}
+        <tr>
+          <td>{{rental.book.code}}</td>
+          <td>{{rental.book.title}}</td>
+          <td>{{rental.dueDate|date("d/m/Y")}}</td>
+          <td class="returnDate">
+            {% if rental.returnDate is not null %}
+              {{rental.returnDate|date("d/m/Y")}}
+            {% else %}
+              Non rendu
+            {% endif %}
+          </td>
+          <td><button data-id={{rental.id}} class="btn btn-primary returnButton"><i class="fas fa-arrow-down"></i></button></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </br>
 
-    <a class="btn btn-primary" href="{{ path('rental_index') }}">back to list</a>
+    <a class="btn btn-primary" href="{{ path('rental_index') }}">Retour</a>
 
-    <a class="btn btn-primary" href="{{ path('rental_edit', {'id': rental.id}) }}">edit</a>
+    <a class="btn btn-primary" href="{{ path('rental_edit', {'id': rental.id}) }}">Editer</a>
 
     {{ include('rental/_delete_form.html.twig') }}
+{% endblock %}
+{% block javascript %}
+  <script>
+    $(".returnButton").click(function() {
+      var currentId = $(this).data('id')
+      var url = "{{ path('return',{'id':'currentId'})}}";
+      url = url.replace('currentId', currentId);
+      $.getJSON( url, function( json ) {})
+        .done(function(data) {
+          $(this).parent().parent().find(".returnDate").css("border", "13px solid red")
+        })
+    })
+  </script>
 {% endblock %}

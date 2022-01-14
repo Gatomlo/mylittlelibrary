@@ -44,7 +44,10 @@ class RentalType extends AbstractType
               'label' => 'Emprunteur',
               'class' => Borrower::class,
               'attr' => array('class' => 'form-control'),
-              'choice_label' => "fullName"));
+              'choice_label' => "fullName"))
+            ->add('books',HiddenType::class,array(
+              'mapped'=>false
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -4,7 +4,11 @@
 
 {% block body %}
     <h1>Créer un emprunt</h1>
-    {{ include('rental/_form.html.twig') }}
+    {{ form_start(form) }}
+      {{form_row(form.borrower)}}
+      {{form_row(form.term)}}
+      {{form_row(form.observation)}}
+    </br>
     <div class="input-group mb-3">
     <input type="text" class="form-control" id="book_CODE" placeholder="Insérer un code de livre" aria-label="Code de livre" aria-describedby="button-addon2">
       <button class="btn btn-outline-secondary" type="button" id="findBook"><i class="fas fa-plus"></i></button>
@@ -22,14 +26,17 @@
         </tbody>
     </table>
     </div>
-    <a href="{{ path('rental_index') }}">back to list</a>
+    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    <a class="btn btn-primary" href="{{ path('rental_index') }}">Retour</a>
+    {{ form_end(form) }}
 {% endblock %}
+
 {% block javascript %}
   <script>
     $.ajaxSetup({ cache: false });
     var index = 0
+    var booksListToCreate =[]
     $("#findBook").click(function(evt) {
-      var booksListToCreate =[]
       var locationDate = $("#rental_locationDate").val()
       evt.preventDefault();
       var url = "{{ path('find_book',{'code':'codeBook'})}}";
@@ -39,10 +46,11 @@
           moment.locale('fr');
           date = moment().add(7, 'days');
           var newItem = "<<tr><td>"+data['title']+"</td><td>"+date.format('ll')+"</td><td>"+index+"</td></tr>"
-          var newItemToCreate = [data['id'],date]
+          var newItemToCreate = data['id']+'/'+date
           $('#booksList').append(newItem);
           booksListToCreate.push(newItemToCreate)
           index = index + 1
+          $("#rental_books").val(booksListToCreate.toString())
           });
     })
   </script>

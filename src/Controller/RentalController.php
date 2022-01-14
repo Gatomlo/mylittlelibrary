@@ -3,13 +3,18 @@
 namespace App\Controller;
 
 use App\Entity\Rental;
+use App\Entity\BookRental;
 use App\Form\RentalType;
 use App\Repository\RentalRepository;
+use App\Repository\BookRentalRepository;
+use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/rental")
@@ -29,15 +34,33 @@ class RentalController extends AbstractController
     /**
      * @Route("/new", name="rental_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,BookRepository $BookRepository): Response
     {
         $rental = new Rental();
         $form = $this->createForm(RentalType::class, $rental);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $rental->setLocationDate(new \DateTime('NOW'));
+            $booksListString = $form["books"]->getData();
+            $booksListArray = explode(",",$booksListString);
+            foreach ($booksListArray as &$oneBook) {
+                $oneBookArray = explode("/",$oneBook);
+                $bookId = $oneBookArray[0];
+                $actualBook = $BookRepository->findOneBy(array('id'=> $bookId ));
+                $bookRental = new BookRental();
+                $bookRental->setStatus("borrowed");
+                $bookRental->setRental($rental);
+                $bookRental->setBook($actualBook);
+                $bookRental->setDueDate(new \DateTime('NOW'));
+                $entityManager->persist($bookRental);
+                $rental->addBookRental($bookRental);
+            }
+
             $entityManager->persist($rental);
             $entityManager->flush();
+
+
 
             return $this->redirectToRoute('rental_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -46,6 +69,18 @@ class RentalController extends AbstractController
             'rental' => $rental,
             'form' => $form,
         ]);
+    }
+
+    /**
+     * @Route("/return/{id}", name="return")
+     */
+    public function return(BookRentalRepository $bookRentalRepository,$id, EntityManagerInterface $entityManager)
+    {
+        $book = $bookRentalRepository->findOneBy(array('id'=> $id ));
+        $book -> setReturnDate(new \DateTime('NOW'));
+        $entityManager->persist($book);
+        $entityManager->flush();
+        return new JsonResponse('success');
     }
 
     /**

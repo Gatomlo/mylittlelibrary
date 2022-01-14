@@ -4,9 +4,18 @@
 
 {% block body %}
     <h1>Créer un nouveau livre</h1>
-    {{ include('book/_form.html.twig') }}
-    <a href="{{ path('book_index') }}">back to list</a>
+    {{ form_start(form) }}
+        <div class="input-group mb-3">
+            {{form_row(form.ISBN)}}
+            <button class="btn btn-outline-secondary" type="button" id="submit"><i class="fas fa-magic"></i></button>
+        </div>
+        {{ form_widget(form) }}
+        <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+
+    <a class="btn btn-primary" href="{{ path('book_index') }}">Retour</a>
 {% endblock %}
+
 {% block javascript %}
   <script>
     //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
