@@ -54,6 +54,24 @@
         </tbody>
     </table>
 
+    <h3>Historique</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Emprunteur</th>
+          <th>Date d'emprunt</th>
+        </tr>
+      </thead>
+      <tbody>
+          {%for bookRental in book.bookRentals %}
+            <tr>
+              <td>{{bookRental.rental.borrower.fullName}}</td>
+              <td>{{bookRental.rental.locationDate|date('Y-m-d')}}</td>
+            </tr>
+          {% endfor %}
+      </tbody>
+    </table>
+
     <a class="btn btn-primary" href="{{ path('book_index') }}">Retour</a>
 
     <a class="btn btn-primary"href="{{ path('book_edit', {'id': book.id}) }}">Editer</a>

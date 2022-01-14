@@ -38,6 +38,30 @@
         </tbody>
     </table>
 
+    <h3>Historique</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Titre</th>
+          <th>Date d'emprunt</th>
+          <th>Remise prévue</th>
+          <th>Date de retour</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for rental in borrower.rentals %}
+        {% for book in rental.bookRentals %}
+          <tr>
+            <td>{{book.book.title}}</td>
+            <td>{{book.rental.locationDate|date('Y-m-d')}}</td>
+            <td>{{book.dueDate|date('Y-m-d') }}</td>
+            <td>{{book.returnDate|date('Y-m-d') }}</td>
+          </tr>
+        {% endfor %}
+      {% endfor %}
+      </tbody>
+    </table>
+
     <a class="btn btn-primary" href="{{ path('borrower_index') }}">Retour</a>
 
     <a class="btn btn-primary" href="{{ path('borrower_edit', {'id': borrower.id}) }}">Editer</a>
