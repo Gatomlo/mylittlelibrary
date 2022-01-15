@@ -10,6 +10,7 @@
             <tr>
 
                 <th>LocationDate</th>
+                <th>Emprunteur</th>
                 <th>ReturnStatus</th>
                 <th>Term</th>
                 <th>Observation</th>
@@ -19,13 +20,13 @@
         <tbody>
         {% for rental in rentals %}
             <tr>
-
-                <td>{{ rental.locationDate ? rental.locationDate|date('Y-m-d') : '' }}</td>
+                <td>{{ rental.locationDate ? rental.locationDate|date('d-m-Y') : '' }}</td>
+                <td><a href="{{ path('borrower_show', {'id': rental.borrower.id}) }}">{{rental.borrower.fullName}}</a></td>
                 <td>{{ rental.returnStatus ? 'Yes' : 'No' }}</td>
                 <td>{{ rental.term }}</td>
                 <td>{{ rental.observation }}</td>
                 <td>
-                    <a class="btn btn-primary" href="{{ path('rental_show', {'id': rental.id}) }}"><i class="fas fa-search"></i></a>
+                    <a class="btn btn-primary" href="{{ path('rental_show', {'id': rental.id}) }}"><i class="fas fa-eye"></i></a>
                     <a class="btn btn-primary" href="{{ path('rental_edit', {'id': rental.id}) }}"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>

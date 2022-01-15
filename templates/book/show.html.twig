@@ -60,13 +60,23 @@
         <tr>
           <th>Emprunteur</th>
           <th>Date d'emprunt</th>
+          <th>Retour prévu</th>
+          <th>Date de retour</th
+          <th></th>
         </tr>
       </thead>
       <tbody>
           {%for bookRental in book.bookRentals %}
             <tr>
-              <td>{{bookRental.rental.borrower.fullName}}</td>
-              <td>{{bookRental.rental.locationDate|date('Y-m-d')}}</td>
+              <td><a href="{{ path('borrower_show', {'id': bookRental.rental.borrower.id}) }}">{{bookRental.rental.borrower.fullName}}</a></td>
+              <td>{{bookRental.rental.locationDate|date('d-m-Y')}}</td>
+              <td>{{bookRental.dueDate|date('d-m-Y')}}</td>
+              {% if bookRental.returnDate is not null%}
+                <td>{{bookRental.returnDate|date('d-m-Y') }}</td>
+              {% else %}
+                <td><span class="badge bg-danger"> Non rendu !</span></td>
+              {% endif %}
+              <td><a class="btn btn-primary" href="{{ path('rental_show', {'id': bookRental.id}) }}"><i class="fas fa-eye"></i></a></td>
             </tr>
           {% endfor %}
       </tbody>
