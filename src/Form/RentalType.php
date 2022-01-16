@@ -38,6 +38,7 @@ class RentalType extends AbstractType
               'attr' => array('class' => 'form-control')))
             ->add('observation',TextareaType::class,array(
               'label' => 'Remarques',
+              'required' => false,              
               'attr' => array('class' => 'form-control')))
             ->add('borrower',EntityType::class, array(
               'placeholder' => 'Choisissez une personne',

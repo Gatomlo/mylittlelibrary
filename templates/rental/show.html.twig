@@ -3,7 +3,28 @@
 {% block title %}Emprunt{% endblock %}
 
 {% block body %}
-    <h1>Emprunt</h1>
+<!-- En-tête + menu de page -->
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+          <h1 class="app-page-title mb-0">Emprunt</h1>
+    </div>
+    <div class="col-auto">
+       <div class="page-utilities">
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('rental_edit', {'id': rental.id}) }}"><i class="fas fa-edit"></i></i></a>
+          </div>
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('rental_index') }}"><i class="fas fa-long-arrow-alt-left"></i></a>
+          </div>
+          <div class="col-auto">
+            {{ include('rental/_delete_form.html.twig') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Fin en-tête + menu de page -->
 
     <table class="table">
         <tbody>
@@ -16,8 +37,8 @@
                 <td>{{ rental.locationDate ? rental.locationDate|date('Y-m-d') : '' }}</td>
             </tr>
             <tr>
-                <th>Rendu</th>
-                <td>{{ rental.returnStatus ? 'Oui' : 'Non' }}</td>
+                <th>Statut</th>
+                <td>{{ rental.returnStatus ? '<span class="badge bg-danger">Clôturé</span>' : '<span class="badge bg-success">En cours</span>' }}</td>
             </tr>
             <tr>
                 <th>Remarques</th>
@@ -50,7 +71,7 @@
             {% endif %}
           </td>
           {% if rental.returnDate is null %}
-            <td><button data-id={{rental.id}} class="btn btn-primary returnButton"><i class="fas fa-arrow-down"></i></button></td>
+            <td><button data-id={{rental.id}} class="btn btn-primary returnButton text-light"><i class="fas fa-arrow-down"></i></button></td>
           {% else %}
           <td></td>
           {% endif %}
@@ -59,12 +80,6 @@
       </tbody>
     </table>
     </br>
-
-    <a class="btn btn-primary" href="{{ path('rental_index') }}">Retour</a>
-
-    <a class="btn btn-primary" href="{{ path('rental_edit', {'id': rental.id}) }}">Editer</a>
-
-    {{ include('rental/_delete_form.html.twig') }}
 {% endblock %}
 {% block javascript %}
   <script>

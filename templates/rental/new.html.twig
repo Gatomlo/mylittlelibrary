@@ -3,31 +3,47 @@
 {% block title %}Nouveau prêt{% endblock %}
 
 {% block body %}
-    <h1>Créer un emprunt</h1>
-    {{ form_start(form) }}
+{{ form_start(form) }}
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+          <h1 class="app-page-title mb-0">Nouvel emprunt</h1>
+    </div>
+    <div class="col-auto">
+       <div class="page-utilities">
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+          <div class="col-auto">
+            <button id="submitSave" class="btn btn-primary text-light"><i class="fas fa-save"></i></button>
+          </div>
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('rental_index') }}"><i class="fas fa-long-arrow-alt-left"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
       {{form_row(form.borrower)}}
       {{form_row(form.term)}}
       {{form_row(form.observation)}}
-    </br>
+      {{ form_end(form) }}</br>
+      Livres empruntés
     <div class="input-group mb-3">
     <input type="text" class="form-control" id="book_CODE" placeholder="Insérer un code de livre" aria-label="Code de livre" aria-describedby="button-addon2">
-      <button class="btn btn-outline-secondary" type="button" id="findBook"><i class="fas fa-plus"></i></button>
+      <button class="btn btn-primary text-light" type="button" id="findBook"><i class="fas fa-search"></i></button>
     </div>
     <div>
     <table  class="display table" class="table">
         <thead>
             <tr>
+                <th>Code</th>
                 <th>Titre</th>
                 <th>Retour prévu</th>
-                <th>Action</th>
+                <th></th>
             </tr>
         </thead>
         <tbody id="booksList">
         </tbody>
     </table>
     </div>
-    <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
-    <a class="btn btn-primary" href="{{ path('rental_index') }}">Retour</a>
     {{ form_end(form) }}
 {% endblock %}
 
@@ -45,13 +61,22 @@
         .done(function(data) {
           moment.locale('fr');
           date = moment().add(7, 'days');
-          var newItem = "<<tr><td>"+data['title']+"</td><td>"+date.format('ll')+"</td><td>"+index+"</td></tr>"
-          var newItemToCreate = data['id']+'/'+date
+          var newItem = "<<tr><td>"+data['code']+"</td><td>"+data['title']+"</td><td>"+date.format('ll')+"</td><td><button data-value="+data['id']+'/'+date+'/'+data['code']+" class='btn btn-primary text-light removeButton'><i class='fas fa-times'></i></button></td></tr>"
+          var newItemToCreate = data['id']+'/'+date+'/'+data['code']
           $('#booksList').append(newItem);
           booksListToCreate.push(newItemToCreate)
           index = index + 1
           $("#rental_books").val(booksListToCreate.toString())
           });
     })
+    $(document).on( "click", '.removeButton', function(evt) {
+     for( var i = 0; i < booksListToCreate.length; i++){
+        if ( booksListToCreate[i] === $(this).data('value')) {
+            booksListToCreate.splice(i, 1);
+        }
+      }
+      $("#rental_books").val(booksListToCreate.toString())
+      $(this).parent().parent().remove()
+    });
   </script>
 {% endblock %}

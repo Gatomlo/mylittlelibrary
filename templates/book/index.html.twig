@@ -3,31 +3,52 @@
 {% block title %}Livres{% endblock %}
 
 {% block body %}
-
-    <h1>Liste des livres</h1>
+<!-- En-tête + menu de page -->
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+          <h1 class="app-page-title mb-0">Livres</h1>
+    </div>
+    <div class="col-auto">
+       <div class="page-utilities">
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('book_new') }}"><i class="fas fa-plus"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Fin en-tête + menu de page -->
 
     <table id="table_id" class="display" class="table">
         <thead>
             <tr>
-                <th>Couverture</th>
-                <th>Titre</th>
-                <th>Auteur(s)</th>
-                <th>Editor</th>
-                <th>Localisation</th>
-                <th></th>
+                <th class="cell">Couverture</th>
+                <th class="cell">Titre</th>
+                <th class="cell">Auteur(s)</th>
+                <th class="cell">Editor</th>
+                <th class="cell">Localisation</th>
+                <th class="cell"></th>
             </tr>
         </thead>
         <tbody>
         {% for book in books %}
             <tr>
-                <td><img src="{{ book.image }}"></td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.editor }}</td>
-                <td>{{ book.shelf }}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ path('book_show', {'id': book.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a class="btn btn-primary" href="{{ path('book_edit', {'id': book.id}) }}"><i class="fas fa-edit"></i></a>
+                <td class="cell"><img  class="responsive" src="{{ book.image }}"></td>
+                <td class="cell">{{ book.title }}</td>
+                <td class="cell">{{ book.author }}</td>
+                <td class="cell">{{ book.editor }}</td>
+                <td class="cell">{{ book.shelf }}</td>
+                <td class="cell">
+                 <div class="dropdown">
+                  <button class="btn btn-primary dropdown-toggle text-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-cogs"></i>
+                  </button>
+                  <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" href="{{ path('book_show', {'id': book.id}) }}"><i class="fas fa-eye"></i> Voir</a></li>
+                    <li><a class="dropdown-item" href="{{ path('book_edit', {'id': book.id}) }}"><i class="fas fa-edit"></i>Editer</a></li>
+                  </ul>
+                </div>
                 </td>
             </tr>
         {% else %}
@@ -38,7 +59,7 @@
         </tbody>
     </table>
 
-    <a class="btn btn-primary" href="{{ path('book_new') }}">Nouveau livre</a>
+
 
 
 

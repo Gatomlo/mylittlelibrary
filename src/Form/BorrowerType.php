@@ -25,6 +25,7 @@ class BorrowerType extends AbstractType
               'attr' => array('class' => 'form-control')))
             ->add('phone', TextType::class, array(
               'label' => 'Téléphone',
+              'required' => false,
               'attr' => array('class' => 'form-control')))
             ->add('implantation', ChoiceType::class,array(
               'label' => 'Implantations',
