@@ -27,9 +27,6 @@ class BookType extends AbstractType
               'label' => 'URL image',
               'required' => false,
               'attr' => array('class' => 'form-control')))
-            ->add('code', TextType::class, array(
-              'label' => 'Code du livre',
-              'attr' => array('class' => 'form-control')))
             ->add('owner', TextType::class, array(
               'label' => 'Propriétaire',
               'required' => false,

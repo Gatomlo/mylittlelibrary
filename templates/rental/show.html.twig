@@ -25,7 +25,6 @@
     </div>
   </div>
 <!-- Fin en-tête + menu de page -->
-
     <table class="table">
         <tbody>
             <tr>
@@ -38,7 +37,7 @@
             </tr>
             <tr>
                 <th>Statut</th>
-                <td>{{ rental.returnStatus ? '<span class="badge bg-danger">Clôturé</span>' : '<span class="badge bg-success">En cours</span>' }}</td>
+                <td id="rentalStatus">{{ rental.returnStatus ? '<span class="badge bg-success">Clôturé</span>' : '<span class="badge bg-danger">En cours</span>' }}</td>
             </tr>
             <tr>
                 <th>Remarques</th>
@@ -50,20 +49,20 @@
     <table class="table">
       <thead>
         <tr>
-          <th>Code</th>
-          <th>Titre</th>
-          <th>Date prévue</th>
-          <th>Rendu le</th>
-          <th>Actions</th>
+          <th class="text-center">Code</th>
+          <th class="text-center">Titre</th>
+          <th class="text-center">Date prévue</th>
+          <th class="text-center">Rendu le</th>
+          <th class="text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
       {% for rental in rental.bookRentals %}
         <tr>
-          <td>{{rental.book.code}}</td>
-          <td><a href="{{path('book_show',{'id':rental.book.id})}}">{{rental.book.title}}</a></td>
-          <td>{{rental.dueDate|date("d/m/Y")}}</td>
-          <td class="returnDate">
+          <td class="text-center">{{rental.book.code}}</td>
+          <td class="text-center"><a href="{{path('book_show',{'id':rental.book.id})}}">{{rental.book.title}}</a></td>
+          <td class="text-center">{{rental.dueDate|date("d/m/Y")}}</td>
+          <td class="returnDate text-center">
             {% if rental.returnDate is not null %}
               {{rental.returnDate|date("d/m/Y")}}
             {% else %}
@@ -71,7 +70,7 @@
             {% endif %}
           </td>
           {% if rental.returnDate is null %}
-            <td><button data-id={{rental.id}} class="btn btn-primary returnButton text-light"><i class="fas fa-arrow-down"></i></button></td>
+            <td class="text-center"><button data-id={{rental.id}} class="btn btn-primary returnButton text-light"><i class="fas fa-arrow-down"></i></button></td>
           {% else %}
           <td></td>
           {% endif %}
@@ -92,6 +91,10 @@
         .done(function(data) {
           $(actualButton).parent().parent().find(".returnDate").html("{{'now'|date("d/m/Y")}}")
           $(actualButton).remove();
+          if(data){
+            $('#rentalStatus').html('<span class="badge bg-success">Clôturé</span>')
+
+          }
         })
     })
   </script>

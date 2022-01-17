@@ -59,6 +59,7 @@ class Rental
     {
         $this->book = new ArrayCollection();
         $this->bookRentals = new ArrayCollection();
+        $this->setReturnStatus(false);
     }
 
     public function getId(): ?int

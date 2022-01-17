@@ -24,21 +24,13 @@ class RentalType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('returnStatus',ChoiceType::class,array(
-              'label' => 'Rendu ?',
-              'attr' => array('class' => 'form-control'),
-              'choices' => array(
-                'Non' => false,
-                'Oui' => true,
-                ),
-              ))
             ->add('term',IntegerType::class ,array(
               'label' => 'Durée du prêt',
               'data' => 7,
               'attr' => array('class' => 'form-control')))
             ->add('observation',TextareaType::class,array(
               'label' => 'Remarques',
-              'required' => false,              
+              'required' => false,
               'attr' => array('class' => 'form-control')))
             ->add('borrower',EntityType::class, array(
               'placeholder' => 'Choisissez une personne',

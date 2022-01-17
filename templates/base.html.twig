@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <title>Portal - Bootstrap 5 Admin Dashboard Template For Developers</title>
+    <title>MyLittleLibrary</title>
 
     <!-- Meta -->
     <meta charset="utf-8">
@@ -54,9 +54,9 @@
 			        </div><!--//col-->
 		            <div class="app-utilities col-auto">
 				            <div class="app-utility-item app-user-dropdown dropdown">
-				            <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><img src="assets/images/user.png" alt="user profile"></a>
+				            <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fas fa-lock-open"></i></a>
 				            <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-								<li><a class="dropdown-item" href="login.html">Log Out</a></li>
+								<li><a class="dropdown-item" href="login.html">Deconnecter</a></li>
 							</ul>
 			            </div><!--//app-user-dropdown-->
 		            </div><!--//app-utilities-->
@@ -69,7 +69,7 @@
 	        <div class="sidepanel-inner d-flex flex-column">
 		        <a href="#" id="sidepanel-close" class="sidepanel-close d-xl-none">&times;</a>
 		        <div class="app-branding">
-		            <a class="app-logo" href="{{path('book_index')}}"><img class="logo-icon me-2" src="assets/images/app-logo.svg" alt="logo"><span class="logo-text">MyLittleLibrary</span></a>
+		            <a class="app-logo" href="{{path('book_index')}}"><img class="logo-icon me-2" src="{{asset('portal/images/MyLittleLibrary_logo.png')}}" alt="logo"><span class="logo-text">MyLittleLibrary</span></a>
 
 		        </div><!--//app-branding-->
 			    <nav id="app-nav-main" class="app-nav app-nav-main flex-grow-1">
@@ -120,7 +120,7 @@
 		    <div class="container text-center py-3">
 		         <!--/* This template is free as long as you keep the footer attribution link. If you'd like to use the template without the attribution link, you can buy the commercial license via our website: themes.3rdwavemedia.com Thank you for your support. :) */-->
             <small class="copyright">Créé par <a class="app-link" href="https://github.com/Gatomlo/" target="_blank">Gatomlo</a></small>
-            <small class="copyright">avec un template de <a class="app-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a></small>
+            <small class="copyright">sur base d'un template de <a class="app-link" href="http://themes.3rdwavemedia.com" target="_blank">Xiaoying Riley</a></small>
 
 		    </div>
 	    </footer><!--//app-footer-->
@@ -137,6 +137,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
     <script src="{{asset('portal/plugins/popper.min.js')}}"></script>
     <script src="{{asset('portal/plugins/bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('qrcode/qrcode.min.js')}}"></script>
 
 
     <!-- Page Specific JS -->

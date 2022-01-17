@@ -23,23 +23,23 @@
     <table id="table_id" class="display" class="table">
         <thead>
             <tr>
-                <th class="cell">Couverture</th>
-                <th class="cell">Titre</th>
-                <th class="cell">Auteur(s)</th>
-                <th class="cell">Editor</th>
-                <th class="cell">Localisation</th>
-                <th class="cell"></th>
+                <th class="cell text-center">Couverture</th>
+                <th class="cell text-center">Titre</th>
+                <th class="cell text-center">Auteur(s)</th>
+                <th class="cell text-center">Editeur</th>
+                <th class="cell text-center">Code</th>
+                <th class="cell text-center"></th>
             </tr>
         </thead>
         <tbody>
         {% for book in books %}
             <tr>
-                <td class="cell"><img  class="responsive" src="{{ book.image }}"></td>
-                <td class="cell">{{ book.title }}</td>
-                <td class="cell">{{ book.author }}</td>
-                <td class="cell">{{ book.editor }}</td>
-                <td class="cell">{{ book.shelf }}</td>
-                <td class="cell">
+                <td class="cell text-center"><img  class="img-fluid mx-auto d-block" src="{{ book.image }}"></td>
+                <td class="cell text-center">{{ book.title }}</td>
+                <td class="cell text-center">{{ book.author }}</td>
+                <td class="cell text-center">{{ book.editor }}</td>
+                <td class="cell text-center">{{ book.code }}</td>
+                <td class="cell text-center">
                  <div class="dropdown">
                   <button class="btn btn-primary dropdown-toggle text-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-cogs"></i>

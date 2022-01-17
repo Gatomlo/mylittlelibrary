@@ -23,18 +23,18 @@
         <thead>
             <tr>
                 <th>Emprunteur</th>
-                <th>Date de l'emprunt</th>
-                <th>Statut de l'emprunt</th>
-                <th></th>
+                <th class="text-center">Date de l'emprunt</th>
+                <th class="text-center">Statut de l'emprunt</th>
+                <th class="text-center"></th>
             </tr>
         </thead>
         <tbody>
         {% for rental in rentals %}
             <tr>
                 <td><a href="{{ path('borrower_show', {'id': rental.borrower.id}) }}">{{rental.borrower.fullName}}</a></td>
-                <td>{{ rental.locationDate ? rental.locationDate|date('d-m-Y') : '' }}</td>
-                <td>{{ rental.returnStatus ? 'Yes' : 'No' }}</td>
-                <td>
+                <td class="text-center">{{ rental.locationDate ? rental.locationDate|date('d-m-Y') : '' }}</td>
+                <td class="text-center">{{ rental.returnStatus ? '<span class="badge bg-success">Clôturé</span>' : '<span class="badge bg-danger">En cours</span>' }}</td>
+                <td class="text-center">
                     <div class="dropdown">
                      <button class="btn btn-primary dropdown-toggle text-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                        <i class="fas fa-cogs"></i>
@@ -48,7 +48,7 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="6">no records found</td>
+                <td colspan="6">Pas d'emprunts enregistrés.</td>
             </tr>
         {% endfor %}
         </tbody>

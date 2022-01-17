@@ -74,13 +74,26 @@ class RentalController extends AbstractController
     /**
      * @Route("/return/{id}", name="return")
      */
-    public function return(BookRentalRepository $bookRentalRepository,$id, EntityManagerInterface $entityManager)
+    public function return(BookRentalRepository $bookRentalRepository,rentalRepository $rentalRepository,$id, EntityManagerInterface $entityManager)
     {
-        $book = $bookRentalRepository->findOneBy(array('id'=> $id ));
-        $book -> setReturnDate(new \DateTime('NOW'));
-        $entityManager->persist($book);
+        $bookRental = $bookRentalRepository->findOneBy(array('id'=> $id ));
+        $rentalId= $bookRental->getRental()->getId();
+        $actualRental = $rentalRepository->findOneBy(array('id'=> $rentalId ));
+        $bookRental -> setReturnDate(new \DateTime('NOW'));
+        $bookRental -> setStatus('return');
+        $entityManager->persist($bookRental);
+        $bookRentals = $actualRental->getBookRentals();
+        $actualRental -> setReturnStatus(true);
+        $rentalStatusForJson = true;
+        foreach ($bookRentals as &$oneBookRental) {
+          if (is_null($oneBookRental->getReturnDate())){
+            $actualRental -> setReturnStatus(false);
+            $rentalStatusForJson = false;
+          }
+        }
+        $entityManager->persist($actualRental);
         $entityManager->flush();
-        return new JsonResponse('success');
+        return new JsonResponse($rentalStatusForJson);
     }
 
     /**

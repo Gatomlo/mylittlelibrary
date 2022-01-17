@@ -98,6 +98,18 @@ class Book
     {
         $this->rentals = new ArrayCollection();
         $this->bookRentals = new ArrayCollection();
+        function genererChaineAleatoire($longueur = 5)
+        {
+           $caracteres = '0123456789';
+           $longueurMax = strlen($caracteres);
+           $chaineAleatoire = '';
+           for ($i = 0; $i < $longueur; $i++)
+           {
+             $chaineAleatoire .= $caracteres[rand(0, $longueurMax - 1)];
+           }
+           return $chaineAleatoire;
+        }
+        $this->setCode(genererChaineAleatoire());
     }
 
     public function getId(): ?int

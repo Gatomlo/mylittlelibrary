@@ -3,43 +3,55 @@
 {% block title %}Emprunteurs{% endblock %}
 
 {% block body %}
-    <h1>Liste des emprunteurs</h1>
-
+<!-- En-tête + menu de page -->
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+          <h1 class="app-page-title mb-0">Liste des emprunteurs</h1>
+    </div>
+    <div class="col-auto">
+       <div class="page-utilities">
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('borrower_new') }}"><i class="fas fa-plus"></i></a
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
     <table id="table_id" class="table">
         <thead>
             <tr>
                 <th>Prénom</th>
-                <th>Nom</th>
-                <th>Mail</th>
-                <th>Téléphone</th>
-                <th>Implantation</th>
-                <th>Département</th>
-                <th>Actions</th>
+                <th class="text-center">Nom</th>
+                <th class="text-center">Implantation</th>
+                <th class="text-center">Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for borrower in borrowers %}
             <tr>
                 <td>{{ borrower.firstname }}</td>
-                <td>{{ borrower.lastname }}</td>
-                <td>{{ borrower.mail }}</td>
-                <td>{{ borrower.phone }}</td>
-                <td>{{ borrower.implantation }}</td>
-                <td>{{ borrower.department }}</td>
-                <td>
-                    <a class="btn btn-primary" href="{{ path('borrower_show', {'id': borrower.id}) }}"><i class="fas fa-eye"></i></a>
-                    <a class="btn btn-primary" href="{{ path('borrower_edit', {'id': borrower.id}) }}"><i class="fas fa-edit"></i></a>
+                <td class="text-center">{{ borrower.lastname }}</td>
+                <td class="text-center">{{ borrower.department }}</td>
+                <td class="text-center">
+                  <div class="dropdown">
+                   <button class="btn btn-primary dropdown-toggle text-light" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                     <i class="fas fa-cogs"></i>
+                   </button>
+                   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                     <li><a class="dropdown-item" href="{{ path('borrower_show', {'id': borrower.id}) }}"><i class="fas fa-eye"></i> Voir</a></li>
+                     <li><a class="dropdown-item" href="{{ path('borrower_edit', {'id': borrower.id}) }}"><i class="fas fa-edit"></i>Editer</a></li>
+                   </ul>
+                  </div>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">Pas d'emprunteurs enregistrés.</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <a class="btn btn-primary" href="{{ path('borrower_new') }}">Nouvel emprunteur</a>
 {% endblock %}
 
 {% block javascript %}

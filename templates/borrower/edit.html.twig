@@ -3,11 +3,26 @@
 {% block title %}Modification emprunteur{% endblock %}
 
 {% block body %}
-    <h1>Modification emprunteur</h1>
+<!-- En-tête + menu de page -->
+{{ form_start(form) }}
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+          <h1 class="app-page-title mb-0">Modification emprunteur</h1>
+    </div>
+    <div class="col-auto">
+       <div class="page-utilities">
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
 
-    {{ include('borrower/_form.html.twig', {'button_label': 'Sauver'}) }}
-
-    <a class="btn btn-primary" href="{{ path('borrower_index') }}">Retour</a>
-
-    {{ include('borrower/_delete_form.html.twig') }}
+          <div class="col-auto">
+            <button id="submitSave" class="btn btn-primary text-light"><i class="fas fa-save"></i></button>
+          </div>
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('borrower_show', {'id': borrower.id}) }}"><i class="fas fa-long-arrow-alt-left"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{ form_widget(form) }}
+  {{ form_end(form) }}
 {% endblock %}

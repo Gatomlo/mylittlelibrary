@@ -3,8 +3,28 @@
 {% block title %}Emprunteur{% endblock %}
 
 {% block body %}
-    <h1>Emprunteur</h1>
-
+<!-- En-tête + menu de page -->
+  <div class="row g-3 mb-4 align-items-center justify-content-between">
+    <div class="col-auto">
+          <h1 class="app-page-title mb-0">Emprunteurs</h1>
+    </div>
+    <div class="col-auto">
+       <div class="page-utilities">
+        <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('borrower_edit', {'id': borrower.id}) }}"><i class="fas fa-edit"></i></i></a>
+          </div>
+          <div class="col-auto">
+            <a class="btn btn-primary text-light" href="{{ path('borrower_index') }}"><i class="fas fa-long-arrow-alt-left"></i></a>
+          </div>
+          <div class="col-auto">
+            {{ include('borrower/_delete_form.html.twig') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Fin en-tête + menu de page -->
     <table class="table">
         <tbody>
             <tr>
@@ -37,15 +57,14 @@
             </tr>
         </tbody>
     </table>
-
-    <h3>Historique</h3>
+    <h4>Historique</h4>
     <table id="table_id" class="table">
       <thead>
         <tr>
-          <th>Titre</th>
-          <th>Date d'emprunt</th>
-          <th>Remise prévue</th>
-          <th>Date de retour</th>
+          <th class="text-center">Titre</th>
+          <th class="text-center">Date d'emprunt</th>
+          <th class="text-center">Remise prévue</th>
+          <th class="text-center">Date de retour</th>
           <th></th>
         </tr>
       </thead>
@@ -53,26 +72,20 @@
       {% for rental in borrower.rentals %}
         {% for book in rental.bookRentals %}
           <tr>
-            <td><a href="{{path('book_show', {'id':book.id})}}">{{book.book.title}}</a></td>
-            <td>{{book.rental.locationDate|date('d-m-Y')}}</td>
-            <td>{{book.dueDate|date('d-m-Y') }}</td>
+            <td class="text-center"><a href="{{path('book_show', {'id':book.id})}}">{{book.book.title}}</a></td>
+            <td class="text-center">{{book.rental.locationDate|date('d-m-Y')}}</td>
+            <td class="text-center">{{book.dueDate|date('d-m-Y') }}</td>
             {% if book.returnDate is not null%}
-              <td>{{book.returnDate|date('d-m-Y') }}</td>
+              <td class="text-center">{{book.returnDate|date('d-m-Y') }}</td>
             {% else %}
-              <td><span class="badge bg-danger"> Non rendu !</span></td>
+              <td class="text-center"><span class="badge bg-danger"> Non rendu !</span></td>
             {% endif %}
-            <td><a class="btn btn-primary" href="{{ path('rental_show', {'id': book.rental.id}) }}"><i class="fas fa-eye"></i></a></td>
+            <td class="text-center"><a class="btn btn-primary text-light" href="{{ path('rental_show', {'id': book.rental.id}) }}"><i class="fas fa-eye"></i></a></td>
           </tr>
         {% endfor %}
       {% endfor %}
       </tbody>
     </table>
-
-    <a class="btn btn-primary" href="{{ path('borrower_index') }}">Retour</a>
-
-    <a class="btn btn-primary" href="{{ path('borrower_edit', {'id': borrower.id}) }}">Editer</a>
-
-    {{ include('borrower/_delete_form.html.twig') }}
 {% endblock %}
 {% block javascript %}
   <script>

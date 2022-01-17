@@ -1,0 +1,17 @@
+V1
+Ajout des thématiques sur les livres
+Ordonner par les tables du plus récent au plus ancien
+Ajouter la possibilité d'ajouter des livres dans l'édition d'un emprunt
+Sécuriser la gestion via login
+Vérifier le bon fonctionnement des supressions en cascade
+Traduire datatables
+
+V2
+Impression code barre livres
+Scan ISBN d'un livre pour la recherche
+Scan d'un QR code pour ajouter un livre dans un emprunt
+Scan d'un QR code pour retourner un livres
+Message d'alerte si le code d'un livré déjà emprunté est inséré
+
+V3
+Gestion de bibliothèques multiples
