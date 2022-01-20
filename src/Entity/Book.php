@@ -94,6 +94,11 @@ class Book
      */
     private $bookRentals;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="books")
+     */
+    private $category;
+
     public function __construct()
     {
         $this->rentals = new ArrayCollection();
@@ -110,6 +115,7 @@ class Book
            return $chaineAleatoire;
         }
         $this->setCode(genererChaineAleatoire());
+        $this->category = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -326,6 +332,30 @@ class Book
                 $bookRental->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|category[]
+     */
+    public function getCategory(): Collection
+    {
+        return $this->category;
+    }
+
+    public function addCategory(category $category): self
+    {
+        if (!$this->category->contains($category)) {
+            $this->category[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(category $category): self
+    {
+        $this->category->removeElement($category);
 
         return $this;
     }

@@ -30,7 +30,6 @@
         <button class="btn btn-primary text-light" type="button" id="submitISBN"><i class="fas fa-magic"></i></button>
       </div>
     </div>
-
     {{ form_widget(form) }}
   {{ form_end(form) }}
 {% endblock %}
@@ -60,5 +59,30 @@
          })
      });
 
+     $('.category').selectize({
+      plugins: ['remove_button'],
+      valueField: 'text',
+      labelField: 'text',
+      searchField: 'text',
+      hideSelected: true,
+      delimiter: ",",
+      create: true,
+      options: [],
+      load: function(query, callback) {
+        if (!query.length) return callback();
+        $.ajax({
+            url: '{{ path('find_categories')}}',
+            type: 'GET',
+            dataType: 'json',
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+              callback(res);
+            }
+        });
+      }
+    });
+  </script>
   </script>
 {% endblock %}

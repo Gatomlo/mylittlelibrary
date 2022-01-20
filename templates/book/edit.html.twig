@@ -61,5 +61,33 @@
          $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "")
          })
      });
+
+     $('.category').selectize({
+      plugins: ['remove_button'],
+      valueField: 'text',
+      labelField: 'text',
+      searchField: 'text',
+      hideSelected: true,
+      create: true,
+      onItemRemove: function(value){
+        console.log(value)
+
+      },
+      load: function(query, callback) {
+        if (!query.length) return callback();
+        $.ajax({
+            url: '{{ path('find_categories')}}',
+            type: 'GET',
+            dataType: 'json',
+            error: function() {
+                callback();
+            },
+            success: function(res) {
+              callback(res);
+            }
+        });
+      },
+    });
+
   </script>
 {% endblock %}

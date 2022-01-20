@@ -20,12 +20,13 @@
   </div>
 <!-- Fin en-tête + menu de page -->
 
-    <table id="table_id" class="display" class="table">
+    <table id="table_id" class="display table">
         <thead>
             <tr>
                 <th class="cell text-center">Couverture</th>
                 <th class="cell text-center">Titre</th>
                 <th class="cell text-center">Auteur(s)</th>
+                <th class="cell text-center">Thématique(s)</th>
                 <th class="cell text-center">Editeur</th>
                 <th class="cell text-center">Code</th>
                 <th class="cell text-center"></th>
@@ -37,6 +38,12 @@
                 <td class="cell text-center"><img  class="img-fluid mx-auto d-block" src="{{ book.image }}"></td>
                 <td class="cell text-center">{{ book.title }}</td>
                 <td class="cell text-center">{{ book.author }}</td>
+                <td class="cell text-center">
+                  {% for oneCategory in book.category %}
+                    {{ oneCategory.name }}
+                    {% if not loop.last %}, {% endif %}
+                  {% endfor %}
+                </td>
                 <td class="cell text-center">{{ book.editor }}</td>
                 <td class="cell text-center">{{ book.code }}</td>
                 <td class="cell text-center">
@@ -68,7 +75,11 @@
 {% block javascript %}
   <script>
     $(document).ready( function () {
-      $('#table_id').DataTable();
+      $('#table_id').DataTable(
+        {language: {
+          url: "{{asset('DataTables/french.json')}}"
+        }}
+      );
     } );
   </script>
 {% endblock %}

@@ -57,7 +57,11 @@
 {% block javascript %}
   <script>
     $(document).ready( function () {
-      $('#table_id').DataTable();
+      $('#table_id').DataTable(
+        {language: {
+          url: "{{asset('DataTables/french.json')}}"
+        }}
+      );
     } );
   </script>
 {% endblock %}

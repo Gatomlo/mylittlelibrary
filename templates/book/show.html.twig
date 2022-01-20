@@ -39,15 +39,21 @@
                 <td>{{ book.author }}</td>
             </tr>
             <tr>
-                <th>ISBN</th>
-                <td>{{ book.ISBN }}</td>
+                <th>Résumé</th>
+                <td>{{ book.abstract }}</td>
             </tr>
             <tr>
-                <th>Code</th>
-                <td>
-                  <span id="QRcode"></span>
-                  <span id="codeValue">{{ book.code }}</span>
-                </td>
+                <th>Thématique(s)</th>
+                  <td>
+                    {% for oneCategory in book.category %}
+                      {{ oneCategory.name }}
+                      {% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                  </td>
+            </tr>
+            <tr>
+                <th>ISBN</th>
+                <td>{{ book.ISBN }}</td>
             </tr>
             <tr>
                 <th>Propriétaire</th>
@@ -56,10 +62,6 @@
             <tr>
                 <th>Localisation</th>
                 <td>{{ book.shelf }}</td>
-            </tr>
-            <tr>
-                <th>Résumé</th>
-                <td>{{ book.abstract }}</td>
             </tr>
             <tr>
                 <th>Nombre de pages</th>
@@ -76,6 +78,13 @@
             <tr>
                 <th>Langue</th>
                 <td>{{ book.language }}</td>
+            </tr>
+            <tr>
+                <th>Code</th>
+                <td>
+                  <span id="QRcode"></span>
+                  <span id="codeValue">{{ book.code }}</span>
+                </td>
             </tr>
         </tbody>
     </table>
