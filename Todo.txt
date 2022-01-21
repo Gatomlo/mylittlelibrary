@@ -1,10 +1,12 @@
 V1
 Encore à faire :
 Ajout des thématiques sur les livres => Check!
-Ordonner par les tables du plus récent au plus ancien
-Sécuriser la gestion via login
-Vérifier le bon fonctionnement des supressions en cascade
 Traduire datatables => Check !
+Sécuriser la gestion via login => Check!
+Ordonner par les tables du plus récent au plus ancien
+
+Vérifier le bon fonctionnement des supressions en cascade
+
 
 V2
 Impression code barre livres
@@ -16,3 +18,6 @@ Ajouter la possibilité d'ajouter des livres dans l'édition d'un emprunt
 
 V3
 Gestion de bibliothèques multiples
+
+
+Pour créer un admin : php bin/console app:generate-admin votremail@mail.be votremotdepasse

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 /**
  * @Route("/borrower")
  */
@@ -21,6 +22,7 @@ class BorrowerController extends AbstractController
      */
     public function index(BorrowerRepository $borrowerRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('borrower/index.html.twig', [
             'borrowers' => $borrowerRepository->findAll(),
         ]);
@@ -31,6 +33,7 @@ class BorrowerController extends AbstractController
      */
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $borrower = new Borrower();
         $form = $this->createForm(BorrowerType::class, $borrower);
         $form->handleRequest($request);
@@ -53,6 +56,7 @@ class BorrowerController extends AbstractController
      */
     public function show(Borrower $borrower): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('borrower/show.html.twig', [
             'borrower' => $borrower,
         ]);
@@ -63,6 +67,7 @@ class BorrowerController extends AbstractController
      */
     public function edit(Request $request, Borrower $borrower, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(BorrowerType::class, $borrower);
         $form->handleRequest($request);
 
@@ -83,6 +88,7 @@ class BorrowerController extends AbstractController
      */
     public function delete(Request $request, Borrower $borrower, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$borrower->getId(), $request->request->get('_token'))) {
             $entityManager->remove($borrower);
             $entityManager->flush();

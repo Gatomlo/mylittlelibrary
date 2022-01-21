@@ -33,6 +33,7 @@ class BookController extends AbstractController
      */
     public function new(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
@@ -76,6 +77,7 @@ class BookController extends AbstractController
      */
     public function edit(Request $request, Book $book, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $existingCategoriesFromBook = $book->getCategory();
         $existingCategoryArray = [];
         foreach ($existingCategoriesFromBook as $category) {
@@ -118,6 +120,7 @@ class BookController extends AbstractController
      */
     public function delete(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
             $entityManager->remove($book);
             $entityManager->flush();

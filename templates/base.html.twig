@@ -49,12 +49,12 @@
 			            <i class="search-mobile-trigger-icon fas fa-search"></i>
 			        </div><!--//col-->
 		            <div class="app-utilities col-auto">
-				            <div class="app-utility-item app-user-dropdown dropdown">
-				            <a class="dropdown-toggle" id="user-dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"><i class="fas fa-lock-open"></i></a>
-				            <ul class="dropdown-menu" aria-labelledby="user-dropdown-toggle">
-								<li><a class="dropdown-item" href="login.html">Deconnecter</a></li>
-							</ul>
-			            </div><!--//app-user-dropdown-->
+                  {% if is_granted('ROLE_ADMIN') %}
+				            <a  href="{{path('app_logout')}}" role="button" ><i class="fas fa-lock-open"></i></a>
+                  {% else %}
+                    <a  href="{{path('app_login')}}" role="button" ><i class="fas fa-lock"></i></a>
+                  {% endif %}
+			           </div><!--//app-user-dropdown-->
 		            </div><!--//app-utilities-->
 		        </div><!--//row-->
 	            </div><!--//app-header-content-->
@@ -79,25 +79,26 @@
 		                 <span class="nav-link-text">Livres</span>
 					        </a><!--//nav-link-->
 					    </li><!--//nav-item-->
-              <li class="nav-item">
-					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-					        <a class="nav-link" href="{{path('rental_index')}}">
-						        <span class="nav-icon">
-                      <i class="fas fa-cart-plus"></i>
-						         </span>
-		                 <span class="nav-link-text">Emprunts</span>
-					        </a><!--//nav-link-->
-					    </li><!--//nav-item-->
-              <li class="nav-item">
-					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
-					        <a class="nav-link" href="{{path('borrower_index')}}">
-						        <span class="nav-icon">
-                      <i class="fas fa-user-friends"></i>
-						         </span>
-		                 <span class="nav-link-text">Emprunteurs</span>
-					        </a><!--//nav-link-->
-					    </li><!--//nav-item-->
-
+              {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav-item">
+  					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+  					        <a class="nav-link" href="{{path('rental_index')}}">
+  						        <span class="nav-icon">
+                        <i class="fas fa-cart-plus"></i>
+  						         </span>
+  		                 <span class="nav-link-text">Emprunts</span>
+  					        </a><!--//nav-link-->
+  					    </li><!--//nav-item-->
+                <li class="nav-item">
+  					        <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+  					        <a class="nav-link" href="{{path('borrower_index')}}">
+  						        <span class="nav-icon">
+                        <i class="fas fa-user-friends"></i>
+  						         </span>
+  		                 <span class="nav-link-text">Emprunteurs</span>
+  					        </a><!--//nav-link-->
+  					    </li><!--//nav-item-->
+              {% endif %}
 				    </ul><!--//app-menu-->
 			    </nav><!--//app-nav-->
 	        </div><!--//sidepanel-inner-->

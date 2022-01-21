@@ -26,6 +26,7 @@ class RentalController extends AbstractController
      */
     public function index(RentalRepository $rentalRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('rental/index.html.twig', [
             'rentals' => $rentalRepository->findAll(),
         ]);
@@ -36,6 +37,7 @@ class RentalController extends AbstractController
      */
     public function new(Request $request, EntityManagerInterface $entityManager,BookRepository $BookRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $rental = new Rental();
         $form = $this->createForm(RentalType::class, $rental);
         $form->handleRequest($request);
@@ -76,6 +78,7 @@ class RentalController extends AbstractController
      */
     public function return(BookRentalRepository $bookRentalRepository,rentalRepository $rentalRepository,$id, EntityManagerInterface $entityManager)
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $bookRental = $bookRentalRepository->findOneBy(array('id'=> $id ));
         $rentalId= $bookRental->getRental()->getId();
         $actualRental = $rentalRepository->findOneBy(array('id'=> $rentalId ));
@@ -101,6 +104,7 @@ class RentalController extends AbstractController
      */
     public function show(Rental $rental): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('rental/show.html.twig', [
             'rental' => $rental,
         ]);
@@ -111,6 +115,7 @@ class RentalController extends AbstractController
      */
     public function edit(Request $request, Rental $rental, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $form = $this->createForm(RentalType::class, $rental);
         $form->handleRequest($request);
 
@@ -131,6 +136,7 @@ class RentalController extends AbstractController
      */
     public function delete(Request $request, Rental $rental, EntityManagerInterface $entityManager): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         if ($this->isCsrfTokenValid('delete'.$rental->getId(), $request->request->get('_token'))) {
             $entityManager->remove($rental);
             $entityManager->flush();

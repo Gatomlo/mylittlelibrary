@@ -39,12 +39,12 @@
      $.ajaxSetup({ cache: false });
      $("#submitISBN").click(function(evt) {
        evt.preventDefault();
-       // $("#book").html("");
        var tags = $("#book_ISBN").val();
        var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
        var url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+tags+'&key='+key;
        $.getJSON( url, function( json ) {})
          .done(function(data) {
+           console.log(data)
            book=data['items'][0];
          $("#book_title").val(book["volumeInfo"]["title"] || "")
          var authors = book["volumeInfo"]["authors"];
