@@ -80,7 +80,7 @@ class Book
     private $language;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Rental::class, mappedBy="book")
+     * @ORM\ManyToMany(targetEntity=Rental::class, mappedBy="book", cascade={"remove"})
      */
     private $rentals;
 
@@ -90,12 +90,12 @@ class Book
     private $year;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="book")
+     * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="book",cascade={"remove"})
      */
     private $bookRentals;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="books")
+     * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="books", cascade={"remove"})
      */
     private $category;
 

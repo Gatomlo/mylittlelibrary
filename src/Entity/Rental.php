@@ -21,7 +21,7 @@ class Rental
 
     /**
      * @ORM\ManyToOne(targetEntity=Borrower::class, inversedBy="rentals")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $borrower;
 
@@ -51,7 +51,7 @@ class Rental
     private $observation;
 
     /**
-     * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="rental")
+     * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="rental", cascade={"remove"})
      */
     private $bookRentals;
 

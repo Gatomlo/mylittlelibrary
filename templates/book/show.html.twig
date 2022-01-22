@@ -108,14 +108,20 @@
         <tbody>
             {%for bookRental in book.bookRentals %}
               <tr>
-                <td ><a href="{{ path('borrower_show', {'id': bookRental.rental.borrower.id}) }}">{{bookRental.rental.borrower.fullName}}</a></td>
+                <td >
+                  {% if bookRental.rental.borrower is not null%}
+                    <a href="{{ path('borrower_show', {'id': bookRental.rental.borrower.id}) }}">{{bookRental.rental.borrower.fullName}}</a>
+                  {% else %}
+                      Emprunteur supprimé !
+                  {% endif %}
+                </td>
                 <td class="text-center">{{bookRental.rental.locationDate|date('d-m-Y')}}</td>
                 {% if bookRental.returnDate is not null%}
                   <td class="text-center">{{bookRental.returnDate|date('d-m-Y') }}</td>
                 {% else %}
                   <td class="text-center"><span class="badge bg-danger"> Non rendu !</span></td>
                 {% endif %}
-                <td class="text-center"><a class="btn btn-primary text-light" href="{{ path('rental_show', {'id': bookRental.id}) }}"><i class="fas fa-eye"></i></a></td>
+                <td class="text-center"><a class="btn btn-primary text-light" href="{{ path('rental_show', {'id': bookRental.rental.id}) }}"><i class="fas fa-eye"></i></a></td>
               </tr>
             {% endfor %}
         </tbody>

@@ -31,7 +31,13 @@
         <tbody>
         {% for rental in rentals %}
             <tr>
-                <td><a href="{{ path('borrower_show', {'id': rental.borrower.id}) }}">{{rental.borrower.fullName}}</a></td>
+                <td >
+                  {% if rental.borrower is not null%}
+                    <a href="{{ path('borrower_show', {'id': rental.borrower.id}) }}">{{rental.borrower.fullName}}</a>
+                  {% else %}
+                      Emprunteur supprimé !
+                  {% endif %}
+                </td>
                 <td class="text-center">{{ rental.locationDate ? rental.locationDate|date('d-m-Y') : '' }}</td>
                 <td class="text-center">{{ rental.returnStatus ? '<span class="badge bg-success">Clôturé</span>' : '<span class="badge bg-danger">En cours</span>' }}</td>
                 <td class="text-center">

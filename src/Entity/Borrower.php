@@ -51,6 +51,7 @@ class Borrower
 
     /**
      * @ORM\OneToMany(targetEntity=Rental::class, mappedBy="borrower")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $rentals;
 
@@ -87,7 +88,7 @@ class Borrower
       return $this->firstname . ' ' . $this->lastname;
       }
     }
-    
+
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;

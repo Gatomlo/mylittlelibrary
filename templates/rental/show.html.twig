@@ -29,7 +29,13 @@
         <tbody>
             <tr>
                 <th>Emprunteur</th>
-                <td><a href="{{ path('borrower_show', {'id': rental.borrower.id}) }}">{{rental.borrower.fullName}}</a></td>
+                <td >
+                  {% if rental.borrower is not null%}
+                    <a href="{{ path('borrower_show', {'id': rental.borrower.id}) }}">{{rental.borrower.fullName}}</a>
+                  {% else %}
+                      Emprunteur supprimé !
+                  {% endif %}
+                </td>
             </tr>
             <tr>
                 <th>Date d'emprunt</th>
