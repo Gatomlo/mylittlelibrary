@@ -45,7 +45,7 @@ class BookType extends AbstractType
             ->add('abstract', TextareaType::class, array(
               'label' => 'Résumé',
               'required' => false,
-              'attr' => array('class' => 'form-control')))
+              'attr' => array('class' => 'form-control h-25')))
             ->add('paging', TextType::class, array(
               'label' => 'Pagination',
               'required' => false,
