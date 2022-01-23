@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Book;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -41,7 +42,7 @@ class BookType extends AbstractType
               'label' => 'Localisation',
               'required' => false,
               'attr' => array('class' => 'form-control')))
-            ->add('abstract', TextType::class, array(
+            ->add('abstract', TextareaType::class, array(
               'label' => 'Résumé',
               'required' => false,
               'attr' => array('class' => 'form-control')))
