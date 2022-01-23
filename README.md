@@ -1,6 +1,6 @@
 # mylittlelibrary
 
-Installation :
+## *Installation*
 
 Copier le dépôt
 
