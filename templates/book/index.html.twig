@@ -64,25 +64,21 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="14">no records found</td>
+                <td colspan="14">Pas de livre enregistré!</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-
-
-
-
 {% endblock %}
-
 {% block javascript %}
   <script>
     $(document).ready( function () {
-      $('#table_id').DataTable(
-        {language: {
+      $('#table_id').DataTable({
+        language: {
           url: "{{asset('DataTables/french.json')}}"
-        }}
+        },
+        responsive:true
+      }
       );
     } );
   </script>

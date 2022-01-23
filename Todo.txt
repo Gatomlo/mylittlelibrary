@@ -15,6 +15,8 @@ Scan d'un QR code pour ajouter un livre dans un emprunt
 Scan d'un QR code pour retourner un livres
 Message d'alerte si le code d'un livré déjà emprunté est inséré
 Ajouter la possibilité d'ajouter des livres dans l'édition d'un emprunt
+Allégé les librairies (exemple: viré toutes les versions inutiles de datatables)
+Optimiser l'affichage des historiques sur Smartphpone
 
 V3
 Gestion de bibliothèques multiples

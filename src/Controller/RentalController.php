@@ -28,7 +28,7 @@ class RentalController extends AbstractController
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('rental/index.html.twig', [
-            
+            'rentals' => $rentalRepository->findAll(),
         ]);
     }
 
