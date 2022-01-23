@@ -106,7 +106,7 @@
           </tr>
         </thead>
         <tbody>
-            {%for bookRental in book.bookRentals %}
+            {%for bookRental in book.bookRentals|sort %}
               <tr>
                 <td >
                   {% if bookRental.rental.borrower is not null%}
