@@ -25,6 +25,7 @@ class BookType extends AbstractType
             ->add('category',TextType::class, array(
               'label' => 'Thématique(s)',
               'mapped' => false,
+              'required' => false,
               'data' => $options['actualCategory'],
               'attr' => array('class' => 'category')))
             ->add('ISBN', TextType::class, array(
