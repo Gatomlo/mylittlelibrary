@@ -25,7 +25,7 @@
     <table id="table_id" class="display table">
         <thead>
             <tr>
-                <th class="cell text-center">Couverture</th>
+                <th class="cell">Couverture</th>
                 <th class="cell text-center">Titre</th>
                 <th class="cell text-center">Auteur(s)</th>
                 <th class="cell text-center">Thématique(s)</th>
@@ -36,7 +36,7 @@
         <tbody>
         {% for book in books %}
             <tr>
-                <td class="cell text-center"><img  class="img-fluid mx-auto d-block" src="{{ book.image }}"></td>
+                <td class="cell"><img  class="img-fluid d-block w-50" src="{{ book.image }}"></td>
                 <td class="cell text-center">{{ book.title }}</td>
                 <td class="cell text-center">{{ book.author }}</td>
                 <td class="cell text-center">
@@ -58,7 +58,7 @@
                   </ul>
                 </div>
                 {% else %}
-                  <li><a class="btn btn-primary text-light" href="{{ path('book_show', {'id': book.id}) }}"><i class="fas fa-eye"></i></a></li>
+                  <a class="btn btn-primary text-light" href="{{ path('book_show', {'id': book.id}) }}"><i class="fas fa-eye"></i></a>
                 {% endif %}
                 </td>
             </tr>
