@@ -11,6 +11,11 @@ Vérifier le bon fonctionnement des supressions en cascade
 V2
 Impression code barre livres
 Scan ISBN d'un livre pour la recherche
+
+https://nimiq.github.io/qr-scanner/demo/
+https://blog.minhazav.dev/research/html5-qrcode
+https://github.com/schmich/instascan
+
 Scan d'un QR code pour ajouter un livre dans un emprunt
 Scan d'un QR code pour retourner un livres
 Message d'alerte si le code d'un livré déjà emprunté est inséré

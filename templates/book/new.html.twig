@@ -27,36 +27,44 @@
       {{form_widget(form.ISBN)}}
       <div class="input-group-append">
         <button class="btn btn-primary text-light" type="button" id="submitISBN"><i class="fas fa-magic"></i></button>
+        <button class="btn btn-primary text-light" type="button" id="submitISBN"><i class="fas fa-camera"></i></button>
+
       </div>
     </div>
+    <div style="width: 500px" id="reader"></div>
     {{ form_widget(form) }}
   {{ form_end(form) }}
 {% endblock %}
 {% block javascript %}
+  <script src="{{asset('js/html5-qrcode.min.js')}}"></script>
   <script>
     //neutralisation du cache Ajax pour pouvoir réeffectuer la recherche
-     $.ajaxSetup({ cache: false });
-     $("#submitISBN").click(function(evt) {
-       evt.preventDefault();
-       var tags = $("#book_ISBN").val();
-       var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
-       var url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+tags+'&key='+key;
-       $.getJSON( url, function( json ) {})
-         .done(function(data) {
-           console.log(data)
-           book=data['items'][0];
-         $("#book_title").val(book["volumeInfo"]["title"] || "")
-         var authors = book["volumeInfo"]["authors"];
-         authors.toString();
-         $("#book_author").val(authors)
-         $("#book_language").val(book["volumeInfo"]["language"] || "")
-         $("#book_year").val(book["volumeInfo"]["publishedDate"] || "")
-         $("#book_editor").val(book["volumeInfo"]["publisher"] || "")
-         $("#book_paging").val(book["volumeInfo"]["pageCount"] || "")
-         $("#book_abstract").val(book["volumeInfo"]["description"] || "")
-         $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "")
-         })
-     });
+    $.ajaxSetup({ cache: false });
+    $("#submitISBN").click(function(evt) {
+      evt.preventDefault();
+      var tags = $("#book_ISBN").val();
+      var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
+      var url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+tags+'&key='+key;
+      findByIsbn(url);
+    });
+
+    function findByIsbn(url){
+      $.getJSON( url, function( json ) {})
+        .done(function(data) {
+          console.log(data)
+          book=data['items'][0];
+        $("#book_title").val(book["volumeInfo"]["title"] || "")
+        var authors = book["volumeInfo"]["authors"];
+        authors.toString();
+        $("#book_author").val(authors)
+        $("#book_language").val(book["volumeInfo"]["language"] || "")
+        $("#book_year").val(book["volumeInfo"]["publishedDate"] || "")
+        $("#book_editor").val(book["volumeInfo"]["publisher"] || "")
+        $("#book_paging").val(book["volumeInfo"]["pageCount"] || "")
+        $("#book_abstract").val(book["volumeInfo"]["description"] || "")
+        $("#book_image").val(book["volumeInfo"]["imageLinks"]["smallThumbnail"] || "")
+        })
+    }
 
      $('.category').selectize({
       plugins: ['remove_button'],
@@ -82,6 +90,23 @@
         });
       }
     });
+
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+    "reader", { fps: 10, qrbox: 150 });
+
+      function onScanSuccess(decodedText, decodedResult) {
+          // Handle on success condition with the decoded text or result.
+          console.log(decodedText);
+          $("#book_ISBN").val(decodedText);
+          var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
+          var url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+decodedText+'&key='+key;
+          findByIsbn(url);
+          // ...
+          html5QrcodeScanner.clear();
+          // ^ this will stop the scanner (video feed) and clear the scan area.
+      }
+
+      html5QrcodeScanner.render(onScanSuccess);
   </script>
-  </script>
+
 {% endblock %}
