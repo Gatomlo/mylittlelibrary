@@ -97,11 +97,15 @@ $("#cameraSearch").click(function(evt) {
       inputStream : {
         name : "Live",
         type : "LiveStream",
-        constraints: {
-        width: 250 ,
-        height: 250},
+        size: 1920,
         target: document.querySelector('#yourElement')    // Or '#yourElement' (optional)
       },
+      area: { // defines rectangle of the detection/localization area
+   top: "20%",    // top offset
+   right: "20%",  // right offset
+   left: "20%",   // left offset
+   bottom: "20%"  // bottom offset
+ },
       locate: true,
       halfSample: true,
       patchSize: "medium",
