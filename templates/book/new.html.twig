@@ -123,13 +123,13 @@ $("#cameraSearch").click(function(evt) {
     Quagga.start();
     Quagga.onDetected(
       function(data){
+          Quagga.stop()
           const audio = new Audio("{{asset('beep.mp3')}}");
           audio.play();
           $("#book_ISBN").val(data.codeResult.code);
           var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
           var url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+data.codeResult.code+'&key='+key;
           findByIsbn(url)
-          Quagga.stop()
           $('#yourElement').html('')
       });
   });
