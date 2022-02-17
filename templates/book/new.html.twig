@@ -92,6 +92,7 @@
       }
     });
 $("#cameraSearch").click(function(evt) {
+
     $("#book_ISBN").val();
     Quagga.init({
       inputStream : {
@@ -101,11 +102,11 @@ $("#cameraSearch").click(function(evt) {
         target: document.querySelector('#yourElement')    // Or '#yourElement' (optional)
       },
       area: { // defines rectangle of the detection/localization area
-   top: "20%",    // top offset
-   right: "20%",  // right offset
-   left: "20%",   // left offset
-   bottom: "20%"  // bottom offset
- },
+        top: "20%",    // top offset
+        right: "20%",  // right offset
+        left: "20%",   // left offset
+        bottom: "20%"  // bottom offset
+      },
       locate: true,
       halfSample: true,
       patchSize: "medium",
@@ -118,6 +119,7 @@ $("#cameraSearch").click(function(evt) {
           console.log(err);
           return
       }
+    $('.drawingBuffer').remove()
     Quagga.start();
     Quagga.onDetected(
       function(data){
@@ -128,6 +130,7 @@ $("#cameraSearch").click(function(evt) {
           var url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+data.codeResult.code+'&key='+key;
           findByIsbn(url)
           Quagga.stop()
+          $('#yourElement').html('')
       });
   });
 });
