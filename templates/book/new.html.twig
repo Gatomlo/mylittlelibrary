@@ -4,6 +4,7 @@
 {% block title %}Nouveau livre{% endblock %}
 
 {% block body %}
+
 <!-- En-tête + menu de page -->
 {{ form_start(form) }}
   <div class="row g-3 mb-4 align-items-center justify-content-between">
@@ -26,12 +27,12 @@
     {{form_label(form.ISBN)}}
     <div class="input-group mb-3">
       {{form_widget(form.ISBN)}}
-      <div class="input-group-append">
+
         <button class="btn btn-primary text-light" type="button" id="submitISBN"><i class="fas fa-magic"></i></button>
         <button class="btn btn-primary text-light" type="button" id="cameraSearch"><i class="fas fa-camera"></i></button>
-      </div>
+  
     </div>
-    <div id="yourElement"></div>
+    <div id="interactive" class="viewport"></div>
     {{ form_widget(form) }}
   {{ form_end(form) }}
 {% endblock %}
@@ -99,7 +100,7 @@ $("#cameraSearch").click(function(evt) {
         name : "Live",
         type : "LiveStream",
         size: 1920,
-        target: document.querySelector('#yourElement')    // Or '#yourElement' (optional)
+        target: document.querySelector('#interactive')    // Or '#yourElement' (optional)
       },
       area: { // defines rectangle of the detection/localization area
         top: "20%",    // top offset
@@ -130,7 +131,7 @@ $("#cameraSearch").click(function(evt) {
           var key = 'AIzaSyDo7w86Zn0wYlnkc6jUZx8dnrdq8RmtMc4';
           var url = 'https://www.googleapis.com/books/v1/volumes?q=isbn:'+data.codeResult.code+'&key='+key;
           findByIsbn(url)
-          $('#yourElement').html('')
+          $('#interactive').html('')
       });
   });
 });
