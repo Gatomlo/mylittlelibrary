@@ -39,6 +39,12 @@ class BookRental
     private $book;
 
     /**
+     * @ORM\ManyToOne(targetEntity=Sample::class, inversedBy="bookRentals")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $sample;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Rental::class, inversedBy="bookRentals")
      */
     private $rental;
@@ -92,6 +98,18 @@ class BookRental
     public function setBook(?Book $book): self
     {
         $this->book = $book;
+
+        return $this;
+    }
+
+    public function getSample(): ?Sample
+    {
+        return $this->sample;
+    }
+
+    public function setSample(?Sample $sample): self
+    {
+        $this->sample = $sample;
 
         return $this;
     }

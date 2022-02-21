@@ -55,7 +55,7 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="text-center">Code</th>
+          <th class="text-center">Code de l'exemplaire</th>
           <th class="text-center">Titre</th>
           <th class="text-center">Date prévue</th>
           <th class="text-center">Rendu le</th>
@@ -63,20 +63,20 @@
         </tr>
       </thead>
       <tbody>
-      {% for rental in rental.bookRentals %}
+      {% for oneRental in rental.bookRentals %}
         <tr>
-          <td class="text-center">{{rental.book.code}}</td>
-          <td class="text-center"><a href="{{path('book_show',{'id':rental.book.id})}}">{{rental.book.title}}</a></td>
-          <td class="text-center">{{rental.dueDate|date("d/m/Y")}}</td>
+          <td class="text-center">{{oneRental.sample.code}}</td>
+          <td class="text-center"><a href="{{path('book_show',{'id':oneRental.sample.book.id})}}">{{oneRental.sample.book.title}}</a></td>
+          <td class="text-center">{{oneRental.dueDate|date("d/m/Y")}}</td>
           <td class="returnDate text-center">
-            {% if rental.returnDate is not null %}
-              {{rental.returnDate|date("d/m/Y")}}
+            {% if oneRental.returnDate is not null %}
+              {{oneRental.returnDate|date("d/m/Y")}}
             {% else %}
               Non rendu
             {% endif %}
           </td>
-          {% if rental.returnDate is null %}
-            <td class="text-center"><button data-id={{rental.id}} class="btn btn-primary returnButton text-light"><i class="fas fa-arrow-down"></i></button></td>
+          {% if oneRental.returnDate is null %}
+            <td class="text-center"><button data-id={{oneRental.id}} class="btn btn-primary returnButton text-light"><i class="fas fa-arrow-down"></i></button></td>
           {% else %}
           <td></td>
           {% endif %}

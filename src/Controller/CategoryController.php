@@ -101,8 +101,6 @@ class CategoryController extends AbstractController
         ]);
     }
 
-
-
     /**
      * @Route("/{id}", name="category_delete", methods={"POST"})
      */

@@ -10,12 +10,19 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class BookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('numberOfSample',IntegerType::class, array(
+              'label' => 'Nombre d\'exemplaires',
+              'mapped' => false,
+              'data'=> 1,
+              'required' => false,
+              'attr' => array('class' => 'form-control')))
             ->add('title', TextType::class, array(
               'label' => 'Titre',
               'attr' => array('class' => 'form-control')))
@@ -38,6 +45,7 @@ class BookType extends AbstractType
               'attr' => array('class' => 'form-control')))
             ->add('owner', TextType::class, array(
               'label' => 'Propriétaire',
+              'required' => false,
               'attr' => array('class' => 'form-control')))
             ->add('shelf', TextType::class, array(
               'label' => 'Localisation',
