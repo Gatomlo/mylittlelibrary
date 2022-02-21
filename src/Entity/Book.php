@@ -40,13 +40,9 @@ class Book
     private $image;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $code;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $owner;
 
     /**
@@ -80,42 +76,31 @@ class Book
     private $language;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Rental::class, mappedBy="book", cascade={"remove"})
-     */
-    private $rentals;
-
-    /**
      * @ORM\Column(type="string", nullable=true)
      */
     private $year;
-
-    /**
-     * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="book",cascade={"remove"})
-     */
-    private $bookRentals;
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, inversedBy="books", cascade={"remove"})
      */
     private $category;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sample::class, mappedBy="book",cascade={"persist"}, orphanRemoval=true)
+     */
+    private $samples;
+
+    /**
+    * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="book",cascade={"remove"})
+    */
+   private $bookRentals;
+
     public function __construct()
     {
         $this->rentals = new ArrayCollection();
         $this->bookRentals = new ArrayCollection();
-        function genererChaineAleatoire($longueur = 5)
-        {
-           $caracteres = '0123456789';
-           $longueurMax = strlen($caracteres);
-           $chaineAleatoire = '';
-           for ($i = 0; $i < $longueur; $i++)
-           {
-             $chaineAleatoire .= $caracteres[rand(0, $longueurMax - 1)];
-           }
-           return $chaineAleatoire;
-        }
-        $this->setCode(genererChaineAleatoire());
         $this->category = new ArrayCollection();
+        $this->samples = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -167,18 +152,6 @@ class Book
     public function setImage(?string $image): self
     {
         $this->image = $image;
-
-        return $this;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): self
-    {
-        $this->code = $code;
 
         return $this;
     }
@@ -267,41 +240,68 @@ class Book
         return $this;
     }
 
-    /**
-     * @return Collection|Rental[]
-     */
-    public function getRentals(): Collection
-    {
-        return $this->rentals;
-    }
-
-    public function addRental(Rental $rental): self
-    {
-        if (!$this->rentals->contains($rental)) {
-            $this->rentals[] = $rental;
-            $rental->addBook($this);
-        }
-
-        return $this;
-    }
-
-    public function removeRental(Rental $rental): self
-    {
-        if ($this->rentals->removeElement($rental)) {
-            $rental->removeBook($this);
-        }
-
-        return $this;
-    }
-
     public function getYear(): ?string
+   {
+       return $this->year;
+   }
+
+   public function setYear(?string $year): self
+   {
+       $this->year = $year;
+
+       return $this;
+   }
+
+    /**
+     * @return Collection|category[]
+     */
+    public function getCategory(): Collection
     {
-        return $this->year;
+        return $this->category;
     }
 
-    public function setYear(?string $year): self
+    public function addCategory(category $category): self
     {
-        $this->year = $year;
+        if (!$this->category->contains($category)) {
+            $this->category[] = $category;
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(category $category): self
+    {
+        $this->category->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sample[]
+     */
+    public function getSamples(): Collection
+    {
+        return $this->samples;
+    }
+
+    public function addSample(Sample $sample): self
+    {
+        if (!$this->samples->contains($sample)) {
+            $this->samples[] = $sample;
+            $sample->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSample(Sample $sample): self
+    {
+        if ($this->samples->removeElement($sample)) {
+            // set the owning side to null (unless already changed)
+            if ($sample->getBook() === $this) {
+                $sample->setBook(null);
+            }
+        }
 
         return $this;
     }
@@ -332,30 +332,6 @@ class Book
                 $bookRental->setBook(null);
             }
         }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|category[]
-     */
-    public function getCategory(): Collection
-    {
-        return $this->category;
-    }
-
-    public function addCategory(category $category): self
-    {
-        if (!$this->category->contains($category)) {
-            $this->category[] = $category;
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(category $category): self
-    {
-        $this->category->removeElement($category);
 
         return $this;
     }

@@ -29,8 +29,10 @@
     <div class="input-group mb-3">
     <input type="text" class="form-control" id="book_CODE" placeholder="Insérer un code de livre" aria-label="Code de livre" aria-describedby="button-addon2">
       <button class="btn btn-primary text-light" type="button" id="findBook"><i class="fas fa-search"></i></button>
+      <button class="btn btn-primary text-light" type="button" id="cameraSearch"><i class="fas fa-camera"></i></button>
     </div>
     <div>
+    <div id="interactive" class="viewport"></div>
     <table  class="display table" class="table">
         <thead>
             <tr>
@@ -48,6 +50,7 @@
 {% endblock %}
 
 {% block javascript %}
+  <script src="{{asset('js/quagga.js')}}"></script>
   <script>
     $.ajaxSetup({ cache: false });
     var index = 0
@@ -55,6 +58,11 @@
     $("#findBook").click(function(evt) {
       var locationDate = $("#rental_locationDate").val()
       evt.preventDefault();
+      findAndAddBook()
+    })
+
+    function findAndAddBook(){
+
       var url = "{{ path('find_book',{'code':'codeBook'})}}";
       url = url.replace('codeBook', $("#book_CODE").val());
       $.getJSON( url, function( json ) {})
@@ -68,7 +76,9 @@
           index = index + 1
           $("#rental_books").val(booksListToCreate.toString())
           });
-    })
+    }
+
+
     $(document).on( "click", '.removeButton', function(evt) {
      for( var i = 0; i < booksListToCreate.length; i++){
         if ( booksListToCreate[i] === $(this).data('value')) {
@@ -78,5 +88,49 @@
       $("#rental_books").val(booksListToCreate.toString())
       $(this).parent().parent().remove()
     });
+
+    $("#cameraSearch").click(function(evt) {
+
+        $("#book_ISBN").val();
+        Quagga.init({
+          inputStream : {
+            name : "Live",
+            type : "LiveStream",
+            size: 1920,
+            target: document.querySelector('#interactive')    // Or '#yourElement' (optional)
+          },
+          area: { // defines rectangle of the detection/localization area
+            top: "20%",    // top offset
+            right: "20%",  // right offset
+            left: "20%",   // left offset
+            bottom: "20%"  // bottom offset
+          },
+          locate: true,
+          halfSample: true,
+          patchSize: "medium",
+          decoder : {
+            readers : ["code_128_reader"]
+          },
+        },
+        function(err) {
+          if (err) {
+              console.log(err);
+              return
+          }
+        $('.drawingBuffer').remove()
+        Quagga.start();
+        Quagga.onDetected(
+          function(data){
+              Quagga.stop();
+              const audio = new Audio("{{asset('beep.mp3')}}");
+              audio.play();
+              $("#book_CODE").val(data.codeResult.code);
+              var locationDate = $("#rental_locationDate").val()
+              findAndAddBook()
+              $("#book_CODE").val("")
+          });
+      });
+    });
+
   </script>
 {% endblock %}

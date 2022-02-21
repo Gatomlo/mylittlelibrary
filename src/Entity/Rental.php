@@ -31,6 +31,11 @@ class Rental
     private $book;
 
     /**
+     * @ORM\ManyToMany(targetEntity=Sample::class, inversedBy="rentals")
+     */
+    private $sample;
+
+    /**
      * @ORM\Column(type="date")
      */
     private $locationDate;
@@ -54,6 +59,8 @@ class Rental
      * @ORM\OneToMany(targetEntity=BookRental::class, mappedBy="rental", cascade={"remove"})
      */
     private $bookRentals;
+
+
 
     public function __construct()
     {

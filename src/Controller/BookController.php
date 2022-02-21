@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 use App\Entity\Book;
+use App\Entity\Sample;
 use App\Entity\Category;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Repository\CategoryRepository;
+use App\Repository\SampleRepository;
+use App\Repository\BookRentalRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,13 +34,16 @@ class BookController extends AbstractController
     /**
      * @Route("/new", name="book_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository): Response
+    public function new(Request $request,BookRepository $BookRepository, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository)
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $book = new Book();
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+        $isbn = $form["ISBN"]->getData();
+        $existingBook = $BookRepository-> findOneBy(array('ISBN'=> $isbn));
+        if(empty($existingBook)){
           $categories = $form["category"]->getData();
           $categoriesArray = explode(",",$categories);
           foreach ($categoriesArray as &$category) {
@@ -52,8 +58,30 @@ class BookController extends AbstractController
                $book->addCategory($existingCategory);
              }
            }
+          $numberOfSamples = $form["numberOfSample"]->getData();
+          for ($i = 1; $i <= $numberOfSamples; $i++) {
+            $sample = new Sample();
+            $sample->setCode(uniqid());
+            $entityManager->persist($sample);
+            $book->addSample($sample);
+            $entityManager->flush();
+          }
           $entityManager->persist($book);
           $entityManager->flush();
+        }
+        else{
+          $numberOfSamples = $form["numberOfSample"]->getData();
+          for ($i = 1; $i <= $numberOfSamples; $i++) {
+            $sample = new Sample();
+            $sample->setCode(uniqid());
+            $entityManager->persist($sample);
+            $existingBook->addSample($sample);
+            $entityManager->flush();
+          }
+          $entityManager->persist($existingBook);
+          $entityManager->flush();
+        }
+
           return $this->redirectToRoute('book_index', [], Response::HTTP_SEE_OTHER);
       }
         return $this->renderForm('book/new.html.twig', [
@@ -120,25 +148,38 @@ class BookController extends AbstractController
      */
     public function delete(Request $request, Book $book, EntityManagerInterface $entityManager): Response
     {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($book);
-            $entityManager->flush();
-        }
+      $this->denyAccessUnlessGranted('ROLE_ADMIN');
+      if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
+          $entityManager->remove($book);
+          $entityManager->flush();
+      }
         return $this->redirectToRoute('book_index', [], Response::HTTP_SEE_OTHER);
     }
 
     /**
      * @Route("/findBook/{code}", name="find_book")
      */
-    public function jsonFindBookAction(BookRepository $bookRepo, $code)
+    public function jsonFindBookAction(SampleRepository $sampleRepository,BookRepository $bookRepository, $code)
    {
-       $book = $bookRepo-> findOneBy(array('code'=> $code));
+       $sample = $sampleRepository-> findOneBy(array('code'=> $code));
+       $book = $sample->getBook();
        $findedBook['id'] = $book->getId();
-       $findedBook['code'] = $book->getCode();
+       $findedBook['code'] = $sample->getCode();
        $findedBook['title'] = $book->getTitle();
        $findedBook['author'] = $book->getAuthor();
        return new JsonResponse($findedBook);
+   }
+
+   /**
+    * @Route("/removeSample/{id}", name="remove_sample")
+    */
+   public function removeSample(Request $request,SampleRepository $sampleRepository, EntityManagerInterface $entityManager, $id): Response
+   {
+       $this->denyAccessUnlessGranted('ROLE_ADMIN');
+       $actualSample = $sampleRepository->findOneBy(array('id'=> $id));
+       $entityManager->remove($actualSample);
+       $entityManager->flush();
+       return new JsonResponse('success');
    }
 
 

@@ -6,6 +6,7 @@ use App\Entity\Rental;
 use App\Entity\BookRental;
 use App\Form\RentalType;
 use App\Repository\RentalRepository;
+use App\Repository\SampleRepository;
 use App\Repository\BookRentalRepository;
 use App\Repository\BookRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,7 +36,7 @@ class RentalController extends AbstractController
     /**
      * @Route("/new", name="rental_new", methods={"GET", "POST"})
      */
-    public function new(Request $request, EntityManagerInterface $entityManager,BookRepository $BookRepository): Response
+    public function new(Request $request, EntityManagerInterface $entityManager,BookRepository $BookRepository,SampleRepository $SampleRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $rental = new Rental();
@@ -49,20 +50,20 @@ class RentalController extends AbstractController
             foreach ($booksListArray as &$oneBook) {
                 $oneBookArray = explode("/",$oneBook);
                 $bookId = $oneBookArray[0];
+                $sampleCode = $oneBookArray[2];
                 $actualBook = $BookRepository->findOneBy(array('id'=> $bookId ));
+                $actualSample = $SampleRepository->findOneBy(array('code'=> $sampleCode ));
                 $bookRental = new BookRental();
                 $bookRental->setStatus("borrowed");
                 $bookRental->setRental($rental);
                 $bookRental->setBook($actualBook);
+                $bookRental->setSample($actualSample);
                 $bookRental->setDueDate(new \DateTime('NOW'));
                 $entityManager->persist($bookRental);
                 $rental->addBookRental($bookRental);
             }
-
             $entityManager->persist($rental);
             $entityManager->flush();
-
-
 
             return $this->redirectToRoute('rental_index', [], Response::HTTP_SEE_OTHER);
         }
