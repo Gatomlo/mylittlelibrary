@@ -3,7 +3,6 @@
 {% block title %}Book{% endblock %}
 
 {% block body %}
-
     <!-- En-tête + menu de page -->
       <div class="row g-3 mb-4 align-items-center justify-content-between">
         <div class="col-auto">
@@ -21,6 +20,9 @@
                 <a class="btn btn-primary text-light" href="{{ path('book_index') }}"><i class="fas fa-long-arrow-alt-left"></i></a>
               </div>
               {% if is_granted('ROLE_ADMIN') %}
+              <div class="col-auto">
+                <span id="printButton" class="btn btn-primary text-light" href=""><i class="fas fa-print"></i></span>
+              </div>
                 <div class="col-auto">
                   {{ include('book/_delete_form.html.twig') }}
                 </div>
@@ -91,12 +93,16 @@
                 <td>
                   <!-- <span id="QRcode"></span> -->
                   {% for oneSample in book.samples %}
-                    <div><span id="codeValue">{{ oneSample.code }}</span> <span data-id={{oneSample.id}} type="button" class="badge bg-danger removeSpanButton"><i class="fas fa-minus-circle"></i></span></div>
+                    <div>
+                      <span id="codeValue">{{ oneSample.code }}</span> <span data-id={{oneSample.id}} type="button" class="badge bg-danger removeSpanButton"><i class="fas fa-minus-circle"></i></span>
+                      <img style="display:none;" class="barcode" id={{ oneSample.code }} jsbarcode-format="CODE128" jsbarcode-value={{ oneSample.code }} jsbarcode-textmargin="0" jsbarcode-fontoptions="bold"></img>
+                    </div>
                   {% endfor %}
                 </td>
-            </tr>>
+            </tr>
             {% endif %}
         </tbody>
+
     </table>
     {% if is_granted('ROLE_ADMIN') %}
     <h3>Historique</h3>
@@ -132,11 +138,14 @@
             {% endfor %}
         </tbody>
       </table>
+      <img id='itf' />
     {% endif %}
 {% endblock %}
 {% block javascript%}
-
+  <script src="{{asset('js/JsBarcode.all.js')}}"></script>
   <script>
+    JsBarcode(".barcode").init();
+
     $(".removeSpanButton").click(function() {
       var currentId = $(this).data('id')
       var url = "{{ path('remove_sample',{'id':'currentId'})}}";
@@ -147,6 +156,27 @@
           $(actualButton).parent().remove();
         })
     })
+    $("#printButton").on("click", function() {
+      var printWindow = window.open('', '', 'height=600,width=800');
+      printWindow.document.write('<html><head><title>');
+      printWindow.document.write('Etiquette(s)'+' - {{ book.title }}');
+      printWindow.document.write('</title>');
+      printWindow.document.write('<style>* { font-family: sans-serif } p { margin:5px 0; }h6{display:inline; text-transform:uppercase}</style><style media="print">@page { size: auto;margin: 10; } </style>');
+      printWindow.document.write('</head><body style="display: flex;flex-direction: column;height: 90%;box-sizing: border-box;padding:30px;transform: translate(0,0)"">');
+      {% for oneSample in book.samples %}
+        printWindow.document.write('<div style="border:solid; padding:23px;">');
+        printWindow.document.write('<div>{{ book.title }}</div>');
+        var srcValue = $('#{{oneSample.code}}').attr('src');
+        printWindow.document.write('<img src='+srcValue+'></img>');
+        printWindow.document.write('</div>');
+      {% endfor %}
+      printWindow.document.write('</body></html>');
+      printWindow.document.close();
+      printWindow.print();
+    });
+
+
+
 
     // new QRCode(
     //   document.getElementById("QRcode"),{
