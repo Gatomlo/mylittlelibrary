@@ -89,12 +89,12 @@
             </tr>
             {% if is_granted('ROLE_ADMIN') %}
             <tr>
-                <th>Exemplaire(s)</th>
+                <th>Exemplaire(s) <span class="badge badge-secondary text-secondary">- {{ book.samples|length }} -</span></th>
                 <td>
                   <!-- <span id="QRcode"></span> -->
                   {% for oneSample in book.samples %}
                     <div>
-                      <span id="codeValue">{{ oneSample.code }}</span> <span data-id={{oneSample.id}} type="button" class="badge bg-danger removeSpanButton"><i class="fas fa-minus-circle"></i></span>
+                      <span id="codeValue">{{ oneSample.code }}</span> <span data-id={{oneSample.id}}  type="button" onclick="return confirm('Voulez-vous supprimer cet exemplaire ?')" class="badge bg-danger removeSpanButton"><i class="fas fa-minus-circle"></i></span>
                       <img style="display:none;" class="barcode" id={{ oneSample.code }} jsbarcode-format="CODE128" jsbarcode-value={{ oneSample.code }} jsbarcode-textmargin="0" jsbarcode-fontoptions="bold"></img>
                     </div>
                   {% endfor %}
@@ -162,13 +162,14 @@
       printWindow.document.write('Etiquette(s)'+' - {{ book.title }}');
       printWindow.document.write('</title>');
       printWindow.document.write('<style>* { font-family: sans-serif } p { margin:5px 0; }h6{display:inline; text-transform:uppercase}</style><style media="print">@page { size: auto;margin: 10; } </style>');
-      printWindow.document.write('</head><body style="display: flex;flex-direction: column;height: 90%;box-sizing: border-box;padding:30px;transform: translate(0,0)"">');
+      printWindow.document.write('</head><body style="display: flex;flex-direction: column;height: 90%;box-sizing: border-box;padding:20px;transform: translate(0,0)">');
       {% for oneSample in book.samples %}
-        printWindow.document.write('<div style="border:solid; padding:23px;">');
-        printWindow.document.write('<div>{{ book.title }}</div>');
+        printWindow.document.write('<div style="border:solid; padding:20px;break-before: page;">');
+        printWindow.document.write('<div style="display: flex;"><div width="50%"><img style="padding-top:25px;" width="90%"  src="{{asset('logosap.jpg')}}"></img></div>');
+        printWindow.document.write('<div><div>{{ book.title }}</div>');
         var srcValue = $('#{{oneSample.code}}').attr('src');
         printWindow.document.write('<img src='+srcValue+'></img>');
-        printWindow.document.write('</div>');
+        printWindow.document.write('</div></div></div>');
       {% endfor %}
       printWindow.document.write('</body></html>');
       printWindow.document.close();

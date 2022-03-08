@@ -181,6 +181,4 @@ class BookController extends AbstractController
        $entityManager->flush();
        return new JsonResponse('success');
    }
-
-
 }
