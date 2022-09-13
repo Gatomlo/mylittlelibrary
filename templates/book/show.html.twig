@@ -143,7 +143,9 @@
 {% endblock %}
 {% block javascript%}
   <script src="{{asset('js/JsBarcode.all.js')}}"></script>
+  <script src="{{asset('js/jspdf.umd.js')}}"></script>
   <script>
+    window.jsPDF = window.jspdf.jsPDF;
     JsBarcode(".barcode").init();
 
     $(".removeSpanButton").click(function() {
@@ -157,42 +159,30 @@
         })
     })
     $("#printButton").on("click", function() {
-      var printWindow = window.open('', '', 'height=600,width=800');
-      printWindow.document.write('<html><head><title>');
-      printWindow.document.write('Etiquette(s)'+' - {{ book.title }}');
-      printWindow.document.write('</title>');
-      printWindow.document.write('<style>* { font-family: sans-serif } p { margin:5px 0; }h6{display:inline; text-transform:uppercase}</style><style media="print">@page { size: auto;margin: 10; } </style>');
-      printWindow.document.write('</head><body style="display: flex;flex-direction: column;height: 90%;box-sizing: border-box;padding:20px;transform: translate(0,0)">');
+      const doc = new jsPDF();
+      doc.text('Etiquette(s)'+' - {{ book.title }}', 10, 10);
+      var posImg = 15
+      var posTitle = 40
+      var numberOfStickers = 1;
+      let logo = new Image();
+      logo.src="{{asset('logosap.png')}}"
+      let barCodeImg = new Image();
       {% for oneSample in book.samples %}
-        printWindow.document.write('<div style="border:solid; padding:20px;break-before: page;">');
-        printWindow.document.write('<div style="display: flex;"><div width="50%"><img style="padding-top:25px;" width="90%"  src="{{asset('logosap.jpg')}}"></img></div>');
-        printWindow.document.write('<div><div>{{ book.title }}</div>');
-        var srcValue = $('#{{oneSample.code}}').attr('src');
-        printWindow.document.write('<img src='+srcValue+'></img>');
-        printWindow.document.write('</div></div></div>');
+      if((numberOfStickers % 9) == 0){
+        doc.addPage()
+      }
+        doc.text('{{ book.title }}', 10, posTitle);
+        barCodeImg.src =$('#{{oneSample.code}}').attr('src');
+        posImg = posImg+30;
+        posTitle = posTitle+30;
+        numberOfStickers = numberOfStickers+1;
+        doc.addImage(logo, "PNG",70,posImg,50,20 );
+        doc.addImage(barCodeImg, "PNG",10,posImg,50,20 )
+        numberOfStickers = numberOfStickers+1;
       {% endfor %}
-      printWindow.document.write('</body></html>');
-      printWindow.document.close();
-      printWindow.print();
+      doc.save("a4.pdf");
     });
 
 
-
-
-    // new QRCode(
-    //   document.getElementById("QRcode"),{
-    //   text:$('#codeValue').html(),
-    //   width: 128,
-    //   height: 128,
-    // });
-    // $(document).ready( function () {
-    //   $('#table_id').DataTable({
-    //     language: {
-    //       url: "{{asset('DataTables/french.json')}}"
-    //     },
-    //     responsive:true
-    //     }
-    //   );
-    // });
   </script>
 {% endblock %}
