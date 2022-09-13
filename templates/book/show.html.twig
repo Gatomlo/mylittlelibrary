@@ -160,27 +160,33 @@
     })
     $("#printButton").on("click", function() {
       const doc = new jsPDF();
-      doc.text('Etiquette(s)'+' - {{ book.title }}', 10, 10);
+      console.log('{{ book.title|escape('js')  }}')
+      // doc.text('Etiquette(s)'+' - {{ book.title }}', 10, 10);
       var posImg = 15
-      var posTitle = 40
-      var numberOfStickers = 1;
+      var posTitle = 10
+      var posLine = 40
+      var numberOfStickers = 0;
       let logo = new Image();
       logo.src="{{asset('logosap.png')}}"
       let barCodeImg = new Image();
       {% for oneSample in book.samples %}
-      if((numberOfStickers % 9) == 0){
-        doc.addPage()
-      }
-        doc.text('{{ book.title }}', 10, posTitle);
+        doc.text('{{ book.title|escape('js') }}', 10, posTitle);
         barCodeImg.src =$('#{{oneSample.code}}').attr('src');
-        posImg = posImg+30;
-        posTitle = posTitle+30;
-        numberOfStickers = numberOfStickers+1;
         doc.addImage(logo, "PNG",70,posImg,50,20 );
         doc.addImage(barCodeImg, "PNG",10,posImg,50,20 )
+        doc.line(10, posLine, 120, posLine);
+        posImg = posImg+40;
+        posTitle = posTitle+40;
+        posLine = posLine+40;
         numberOfStickers = numberOfStickers+1;
+        if((numberOfStickers%7)  == 0){
+          doc.addPage()
+          posImg = 15
+          posTitle = 10
+          var posLine = 40
+        }
       {% endfor %}
-      doc.save("a4.pdf");
+      doc.save("{{ book.title|escape('js') }}.pdf");
     });
 
 
