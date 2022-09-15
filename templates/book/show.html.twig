@@ -34,7 +34,7 @@
     <!-- Fin en-tête + menu de page -->
     <h1 class="app-page-title mb-0">{{ book.title }}</h1>
 
-    <table class="table">
+    <table  class="table">
         <tbody>
             <tr>
                 <th>Couverture</th>
@@ -102,7 +102,6 @@
             </tr>
             {% endif %}
         </tbody>
-
     </table>
     {% if is_granted('ROLE_ADMIN') %}
     <h3>Historique</h3>
@@ -117,7 +116,7 @@
           </tr>
         </thead>
         <tbody>
-            {%for bookRental in book.bookRentals|sort %}
+            {% for bookRental in book.bookRentals|sort %}
               <tr>
               <td class="cell"> {{bookRental.sample.code}} </td>
                 <td class="cell">
@@ -138,12 +137,9 @@
             {% endfor %}
         </tbody>
       </table>
-      <img id='itf' />
     {% endif %}
 {% endblock %}
-{% block javascript%}
-  <script src="{{asset('js/JsBarcode.all.js')}}"></script>
-  <script src="{{asset('js/jspdf.umd.js')}}"></script>
+{% block javascript %}
   <script>
     window.jsPDF = window.jspdf.jsPDF;
     JsBarcode(".barcode").init();
@@ -160,7 +156,6 @@
     })
     $("#printButton").on("click", function() {
       const doc = new jsPDF();
-      console.log('{{ book.title|escape('js')  }}')
       // doc.text('Etiquette(s)'+' - {{ book.title }}', 10, 10);
       var posImg = 15
       var posTitle = 10

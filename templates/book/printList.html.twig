@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livres{% endblock %}
+
+{% block body %}
+  <!-- En-tête + menu de page -->
+    <div class="row g-3 mb-4 align-items-center justify-content-between">
+      <div class="col-auto">
+            <h1 class="app-page-title mb-0">Livres</h1>
+      </div>
+      {% if is_granted('ROLE_ADMIN') %}
+        <div class="col-auto">
+           <div class="page-utilities">
+            <div class="row g-2 justify-content-start justify-content-md-end align-items-center">
+              <div class="col-auto">
+                <button id="printButton" class="btn btn-primary text-light" ><i class="fas fa-print"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  <!-- Fin en-tête + menu de page -->
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="generalCheckbox">
+    <label class="form-check-label" for="flexCheckDefault">
+      <b>Sélectionner tout</b>
+    </label>
+  </div>
+  <br>
+  {% for book in books %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="{{book.id}}" id="flexCheckDefault">
+        <label class="form-check-label" for="flexCheckDefault">
+          <input class="form-check-input parentCheckbox" type="checkbox" data-id="{{book.id}}" value="{{book.id}}" id="checkbox{{book.id}}"><div data-bs-toggle="collapse" data-bs-target="#collapse{{book.id}}" aria-expanded="false" aria-controls="collapse{{book.id}}">{{book.title}}</div>
+        </label>
+      </div>
+      <div class="collapse" id="collapse{{book.id}}">
+        <ul class="list-group">
+          {% for sample in book.samples %}
+            <li class="list-group-item"><input  class="form-check-input childCheckbox child{{book.id}}" data-title="{{book.title}}" data-sample="{{sample.code}}" type="checkbox" value="{{sample.id}}" id="flexCheckDefault"> {{sample.code}}</li>
+            {% endfor %}
+        </ul>
+      </div>
+  {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+<script>
+  window.jsPDF = window.jspdf.jsPDF;
+  JsBarcode(".barcode").init();
+
+    $("#generalCheckbox").click(function () {
+      $('input:checkbox').not(this).prop('checked', this.checked);
+    });
+    $(".parentCheckbox").click(function () {
+      var id=$(this).data("id");
+      $('.child'+id).not(this).prop('checked', this.checked);
+    });
+
+    $("#printButton").on("click", function() {
+         const doc = new jsPDF();
+         var posImg = 15
+         var posTitle = 10
+         var posLine = 40
+         var numberOfStickers = 0;
+         let logo = new Image();
+         logo.src="{{asset('logosap.png')}}"
+         let barCodeImg = new Image();
+         $('.childCheckbox').each(function () {
+            if (this.checked) {
+              console.log('test')
+              doc.text('title', 10, posTitle);
+              doc.addImage(logo, "PNG",70,posImg,50,20 );
+              doc.line(10, posLine, 120, posLine);
+              posImg = posImg+40;
+              posTitle = posTitle+40;
+              posLine = posLine+40;
+              numberOfStickers = numberOfStickers+1;
+              if((numberOfStickers%7)  == 0){
+                doc.addPage()
+                posImg = 15
+                posTitle = 10
+                var posLine = 40
+              }
+            }
+          })
+         doc.save("mylittlelibrary.pdf");
+    });
+
+  </script>
+{% endblock %}

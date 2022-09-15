@@ -32,6 +32,16 @@ class BookController extends AbstractController
     }
 
     /**
+     * @Route("/printList", name="printList", methods={"GET"})
+     */
+    public function printList(BookRepository $bookRepository): Response
+    {
+        return $this->render('book/printList.html.twig', [
+            'books' => $bookRepository->findAll(),
+        ]);
+    }
+
+    /**
      * @Route("/new", name="book_new", methods={"GET", "POST"})
      */
     public function new(Request $request,BookRepository $BookRepository, EntityManagerInterface $entityManager, CategoryRepository $categoryRepository)
