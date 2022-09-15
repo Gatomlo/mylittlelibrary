@@ -178,7 +178,7 @@
           doc.addPage()
           posImg = 15
           posTitle = 10
-          var posLine = 40
+          posLine = 40
         }
       {% endfor %}
       doc.save("{{ book.title|escape('js') }}.pdf");

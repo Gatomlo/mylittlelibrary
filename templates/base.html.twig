@@ -15,6 +15,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('DataTables/dataTables.bootstrap5.css')}}">
     <link href="{{asset('portal/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/bootstrap-table@1.19.1/dist/bootstrap-table.min.css">
+
     <link rel="stylesheet" href="{{asset('DataTables/responsive.bootstrap5.min.css')}}">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 
@@ -103,6 +104,15 @@
   		                 <span class="nav-link-text">Emprunteurs</span>
   					        </a><!--//nav-link-->
   					    </li><!--//nav-item-->
+                <li class="nav-item">
+                    <!--//Bootstrap Icons: https://icons.getbootstrap.com/ -->
+                    <a class="nav-link" href="{{path('printList')}}">
+                      <span class="nav-icon">
+                        <i class="fas fa-tags"></i>
+                       </span>
+                       <span class="nav-link-text">Etiquettes</span>
+                    </a><!--//nav-link-->
+                </li><!--//nav-item-->
               {% endif %}
 				    </ul><!--//app-menu-->
 			    </nav><!--//app-nav-->

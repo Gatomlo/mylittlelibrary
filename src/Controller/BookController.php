@@ -36,6 +36,7 @@ class BookController extends AbstractController
      */
     public function printList(BookRepository $bookRepository): Response
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
         return $this->render('book/printList.html.twig', [
             'books' => $bookRepository->findAll(),
         ]);

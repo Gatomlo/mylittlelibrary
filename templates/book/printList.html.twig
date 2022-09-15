@@ -24,28 +24,58 @@
   <div class="form-check">
     <input class="form-check-input" type="checkbox" value="" id="generalCheckbox">
     <label class="form-check-label" for="flexCheckDefault">
-      <b>Sélectionner tout</b>
+      <b>Sélectionner tous les livres visibles</b>
     </label>
   </div>
   <br>
-  {% for book in books %}
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="{{book.id}}" id="flexCheckDefault">
-        <label class="form-check-label" for="flexCheckDefault">
-          <input class="form-check-input parentCheckbox" type="checkbox" data-id="{{book.id}}" value="{{book.id}}" id="checkbox{{book.id}}"><div data-bs-toggle="collapse" data-bs-target="#collapse{{book.id}}" aria-expanded="false" aria-controls="collapse{{book.id}}">{{book.title}}</div>
-        </label>
-      </div>
-      <div class="collapse" id="collapse{{book.id}}">
-        <ul class="list-group">
-          {% for sample in book.samples %}
-            <li class="list-group-item"><input  class="form-check-input childCheckbox child{{book.id}}" data-title="{{book.title}}" data-sample="{{sample.code}}" type="checkbox" value="{{sample.id}}" id="flexCheckDefault"> {{sample.code}}</li>
-            {% endfor %}
-        </ul>
-      </div>
-  {% endfor %}
+  <table id="example" class="display table">
+      <thead>
+          <tr>
+            <th class="cell text-center"></th>
+              <th class="cell text-center">Titre</th>
+              <th class="cell text-center">Auteur(s)</th>
+              <th class="cell text-center">Exemplaire(s)</th>
+          </tr>
+
+      </thead>
+      <tbody>
+      {% for book in books %}
+          <tr>
+            <td class="cell text-center">  <input class="form-check-input parentCheckbox" type="checkbox" data-id="{{book.id}}"  data-title="{{book.title}}" data-author="{{book.author}}" value="{{book.id}}" id="checkbox{{book.id}}"><div data-bs-toggle="collapse" data-bs-target="#collapse{{book.id}}" aria-expanded="false" aria-controls="collapse{{book.id}}"></div></td>
+              <td class="cell text-center">{{ book.title }}</td>
+              <td class="cell text-center">{{ book.author }}</td>
+              <td class="cell text-center">
+                {% for sample in book.samples %}
+                  <input  class="form-check-input childCheckbox child{{book.id}}" data-title="{{book.title}}" data-sample="{{sample.code}}" type="checkbox" value="{{sample.id}}" id="flexCheckDefault"> {{sample.code}}</li>
+                    <img style="display:none;" class="barcode" id={{ sample.code }} jsbarcode-format="CODE128" jsbarcode-value={{ sample.code }} jsbarcode-textmargin="0" jsbarcode-fontoptions="bold"></img>
+                  {% endfor %}
+              </td>
+          </tr>
+      {% else %}
+          <tr>
+              <td colspan="14">Pas de livre enregistré!</td>
+          </tr>
+      {% endfor %}
+      </tbody>
+  </table>
+
+
+
+
 {% endblock %}
 
 {% block javascript %}
+<script>
+$(document).ready(function() {
+    $('#example').DataTable( {
+      language: {
+        url: "{{asset('DataTables/french.json')}}"
+      },
+      responsive:true,
+
+    } );
+} );
+</script>
 <script>
   window.jsPDF = window.jspdf.jsPDF;
   JsBarcode(".barcode").init();
@@ -69,9 +99,13 @@
          let barCodeImg = new Image();
          $('.childCheckbox').each(function () {
             if (this.checked) {
-              console.log('test')
-              doc.text('title', 10, posTitle);
+              var title = $(this).data("title")
+              var code = $(this).data("sample")
+              console.log(code)
+              doc.text(title, 10, posTitle);
+              barCodeImg.src =$('#'+code).attr('src');
               doc.addImage(logo, "PNG",70,posImg,50,20 );
+              doc.addImage(barCodeImg, "PNG",10,posImg,50,20 );
               doc.line(10, posLine, 120, posLine);
               posImg = posImg+40;
               posTitle = posTitle+40;
@@ -81,10 +115,23 @@
                 doc.addPage()
                 posImg = 15
                 posTitle = 10
-                var posLine = 40
+                posLine = 40
               }
             }
           })
+         doc.save("mylittlelibrary.pdf");
+    });
+    $("#printButtonList").on("click", function() {
+         const doc = new jsPDF();
+         var posTitle = 10
+         $('.parentCheckbox').each(function () {
+           var title = $(this).data("title")
+           var author = $(this).data("author")
+            if (this.checked) {
+              doc.text(title+' de '+author, 10, posTitle);
+              posTitle = posTitle+10;
+            }
+        })
          doc.save("mylittlelibrary.pdf");
     });
 
