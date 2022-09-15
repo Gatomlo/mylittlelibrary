@@ -90,6 +90,7 @@ $(document).ready(function() {
 
     $("#printButton").on("click", function() {
          const doc = new jsPDF();
+
          var posImg = 15
          var posTitle = 10
          var posLine = 40
@@ -102,6 +103,7 @@ $(document).ready(function() {
               var title = $(this).data("title")
               var code = $(this).data("sample")
               console.log(code)
+              doc.setFontSize(10);
               doc.text(title, 10, posTitle);
               barCodeImg.src =$('#'+code).attr('src');
               doc.addImage(logo, "PNG",70,posImg,50,20 );
