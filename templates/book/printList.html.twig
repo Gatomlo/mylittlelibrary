@@ -90,7 +90,6 @@ $(document).ready(function() {
 
     $("#printButton").on("click", function() {
          const doc = new jsPDF();
-
          var posImg = 15
          var posTitle = 10
          var posLine = 40
@@ -101,8 +100,11 @@ $(document).ready(function() {
          $('.childCheckbox').each(function () {
             if (this.checked) {
               var title = $(this).data("title")
+              if(title.length > 60){
+                title = title.substring(0,60)
+                title = title+=' ...'
+              }
               var code = $(this).data("sample")
-              console.log(code)
               doc.setFontSize(10);
               doc.text(title, 10, posTitle);
               barCodeImg.src =$('#'+code).attr('src');
